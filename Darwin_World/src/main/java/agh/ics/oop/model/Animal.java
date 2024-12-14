@@ -42,17 +42,5 @@ public class Animal implements WorldElement {
         }
     }
 
-    private void actualMove(MoveDirection direction, MoveValidator map) {
-        Vector2d v;
-        if (direction.equals(MoveDirection.FORWARD)) {
-            v = location.add(currentDirection.toUnitVector());
-        }
-        else {
-            v = location.subtract(currentDirection.toUnitVector());
-        }
-        if(map.canMoveTo(v)) {
-            location = v;
-        }
-    }
 
 }
