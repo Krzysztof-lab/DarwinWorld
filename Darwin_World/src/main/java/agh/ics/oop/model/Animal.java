@@ -34,6 +34,7 @@ public class Animal implements WorldElement {
         return location.equals(position);
     }
 
+    /*
     void move(MoveDirection direction, MoveValidator map) {
         switch (direction) {
             case RIGHT -> currentDirection = currentDirection.next();
@@ -41,6 +42,6 @@ public class Animal implements WorldElement {
             case FORWARD, BACKWARD -> actualMove(direction, map);
         }
     }
-
+    */
 
 }

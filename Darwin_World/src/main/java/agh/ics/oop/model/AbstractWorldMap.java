@@ -24,12 +24,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal, MoveDirection direction) {
-        Vector2d prevPos = animal.getPosition();
-        animal.move(direction, this);
-        animals.remove(prevPos);
-        animals.put(animal.getPosition(), animal);
-        mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
+    public void move(Animal animal) {
     }
 
     @Override
@@ -48,7 +43,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public List<WorldElement> getElements() {
+    public ArrayList<WorldElement> getElements() {
         return new ArrayList<>(animals.values());
     }
 

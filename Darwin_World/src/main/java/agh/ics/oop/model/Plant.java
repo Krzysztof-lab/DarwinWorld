@@ -1,21 +1,21 @@
 package agh.ics.oop.model;
 
-public class Grass implements WorldElement{
+public class Plant implements WorldElement{
 
-    private final Vector2d grassSpot;
+    private final Vector2d plantSpot;
 
-    public Grass(Vector2d grassSpot) {
-        this.grassSpot = grassSpot;
+    public Plant(Vector2d plantSpot) {
+        this.plantSpot = plantSpot;
     }
 
     @Override
     public Vector2d getPosition() {
-        return grassSpot;
+        return plantSpot;
     }
 
     @Override
     public boolean isAt(Vector2d position) {
-        return grassSpot == position;
+        return plantSpot == position;
     }
 
     @Override
