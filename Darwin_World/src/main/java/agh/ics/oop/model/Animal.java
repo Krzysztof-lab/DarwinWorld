@@ -81,12 +81,13 @@ public class Animal implements WorldElement {
         return location.equals(position);
     }
 
-    public void move(int gene, MoveValidator map) {
+    public void move(MoveValidator map) {
+        int currMove = genes[age];
         if(age < AGING_START){
-            currentDirection = currentDirection.change(gene);
+            currentDirection = currentDirection.change(currMove);
             location = location.add(currentDirection.toUnitVector());
         } else if (Math.random() > min(0.8, (age-AGING_START)*SKIP_TURN)) {
-            currentDirection = currentDirection.change(gene);
+            currentDirection = currentDirection.change(currMove);
             location = location.add(currentDirection.toUnitVector());
         }
         age++;
