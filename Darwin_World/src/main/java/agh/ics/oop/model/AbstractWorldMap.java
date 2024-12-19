@@ -24,9 +24,9 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal, MoveDirection direction) {
+    public void move(Animal animal, int gene) {
         Vector2d prevPos = animal.getPosition();
-        animal.move(direction, this);
+        animal.move(gene, this);
         animals.remove(prevPos);
         animals.put(animal.getPosition(), animal);
         mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
