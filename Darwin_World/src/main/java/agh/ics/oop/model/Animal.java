@@ -15,8 +15,9 @@ public class Animal implements WorldElement {
     private int age = 0;
     private int plantsEaten = 0;
     private int offspring = 0;
+    private boolean dead = false;
 
-    private static final int ENERGY_GAIN = 10; //modyfikowalne
+    private static final int ENERGY_GAINED = 10; //modyfikowalne
     private static final int ENERGY_LOST = 20; //modyfikowalne
 
     // Starość nie radość
@@ -43,7 +44,7 @@ public class Animal implements WorldElement {
 
     private void makeGenes(){
         for(int i = 0; i < geneLen; i++){
-            this.genes[i] = (int)(Math.random()*7);
+            this.genes[i] = (int) Math.round((Math.random()*7));
         }
     }
 
@@ -70,6 +71,9 @@ public class Animal implements WorldElement {
     public int[] getGenes() {
         return genes;
     }
+    public boolean isDead() {
+        return dead;
+    }
     //
 
     @Override
@@ -81,22 +85,32 @@ public class Animal implements WorldElement {
         return location.equals(position);
     }
 
-    public void move(MoveValidator map) {
+    public void move(AbstractWorldMap map) {
         int currMove = genes[age];
+        Vector2d newLocation = location;
         if(age < AGING_START){
             currentDirection = currentDirection.change(currMove);
-            location = location.add(currentDirection.toUnitVector());
+            newLocation = location.add(currentDirection.toUnitVector());
         } else if (Math.random() > min(0.8, (age-AGING_START)*SKIP_TURN)) {
             currentDirection = currentDirection.change(currMove);
-            location = location.add(currentDirection.toUnitVector());
+            newLocation = location.add(currentDirection.toUnitVector());
+        }
+        if(map.canMoveTo(newLocation)){
+            location = newLocation;
+            location.setX(location.getX() % map.getCurrentBounds().upperRight().getX());
+        } else {
+            currentDirection = currentDirection.change(4);
         }
         age++;
         energy--;
+        if(energy == 0){
+            dead = true;
+        }
     }
 
     public void eat(){
         plantsEaten++;
-        energy += ENERGY_GAIN;
+        energy += ENERGY_GAINED;
     }
 
     public void breed(){
