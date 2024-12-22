@@ -52,6 +52,12 @@ public class SphericalMap extends AbstractWorldMap {
         }
         return plants.get(position);
     }
+    
+    //Dla biegunów, trzeba zmienić po dodaniu przypływów
+    @Override
+    public boolean canMoveTo(Vector2d position) {
+        return position.getY() <= bounds.upperRight().getY() && position.getY() >= bounds.lowerLeft().getY();
+    }
 
     @Override
     public ArrayList<WorldElement> getElements() {
@@ -59,7 +65,6 @@ public class SphericalMap extends AbstractWorldMap {
         elements.addAll(plants.values());
         return elements;
     }
-
 
     @Override
     public Boundary getCurrentBounds() {

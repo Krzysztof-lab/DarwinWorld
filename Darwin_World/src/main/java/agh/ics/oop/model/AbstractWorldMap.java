@@ -42,10 +42,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         return this.animals.get(position);
     }
 
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return !this.animals.containsKey(position);
-    }
+    public abstract boolean canMoveTo(Vector2d position);
 
     @Override
     public ArrayList<WorldElement> getElements() {

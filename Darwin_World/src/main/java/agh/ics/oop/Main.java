@@ -6,6 +6,8 @@ import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello");
@@ -17,5 +19,10 @@ public class Main {
             System.out.println("Nie można umieścić zwierzęcia: " + e.getMessage());
         }
         System.out.println(map);
+        int n = animal.getGenes().length;
+        for (int i = 0; i < n; i++) {
+            map.move(animal);
+            System.out.println(map);
+        }
     }
 }
