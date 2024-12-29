@@ -19,7 +19,7 @@ public class Main {
             System.out.println("Nie można umieścić zwierzęcia: " + e.getMessage());
         }
         System.out.println(map);
-        int n = animal.getGenes().length;
+        int n = animal.getGenes().size();
         for (int i = 0; i < n; i++) {
             map.move(animal);
             System.out.println(map);
