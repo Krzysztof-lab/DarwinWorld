@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +20,7 @@ public class SphericalMap extends AbstractWorldMap {
 
     private void generatePlants(int numberOfPlants) {
         Random random = new Random();
-        int Height = getCurrentBounds().upperRight().getY();
+        int Height = getBounds().upperRight().getY();
         int middleStart = (int) Math.floor(Height * 0.4);
         int middleEnd = (int) Math.ceil(Height * 0.6);
         int x, y;
@@ -26,7 +28,7 @@ public class SphericalMap extends AbstractWorldMap {
             double randomValue = random.nextDouble();
             boolean switchPlace = randomValue >= 0.2;
             do {
-                x = random.nextInt(getCurrentBounds().upperRight().getX() + 1);
+                x = random.nextInt(getBounds().upperRight().getX() + 1);
                 if (switchPlace) {
                     y = random.nextInt(middleEnd - middleStart + 1) + middleStart;
                 } else {
@@ -66,8 +68,7 @@ public class SphericalMap extends AbstractWorldMap {
         return elements;
     }
 
-    @Override
-    public Boundary getCurrentBounds() {
+    public Boundary getBounds() {
         return bounds;
     }
 }
