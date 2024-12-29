@@ -107,7 +107,7 @@ public class Animal implements WorldElement {
         }
         if(map.canMoveTo(newLocation)){
             location = newLocation;
-            location.setX(abs(location.getX() % map.getCurrentBounds().upperRight().getX()));
+            location.setX(abs(location.getX() % map.getBounds().upperRight().getX()));
         } else {
             currentDirection = currentDirection.change(4);
         }
