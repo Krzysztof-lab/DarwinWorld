@@ -18,7 +18,7 @@ public class SphericalMap extends AbstractWorldMap {
         generatePlants(numberOfPlants);
     }
 
-    private void generatePlants(int numberOfPlants) {
+    public void generatePlants(int numberOfPlants) {
         Random random = new Random();
         int Height = getBounds().upperRight().getY();
         int middleStart = (int) Math.floor(Height * 0.4);

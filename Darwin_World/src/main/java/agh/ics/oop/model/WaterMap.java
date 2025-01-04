@@ -23,4 +23,10 @@ public class WaterMap extends AbstractWorldMap {
     public Boundary getBounds() {
         return bounds;
     }
+
+    @Override
+    public void generatePlants(int numberOfPlants) {
+
+    }
 }
+    

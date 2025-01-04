@@ -49,4 +49,8 @@ public interface WorldMap extends MoveValidator {
     List<WorldElement> getElements();
 
     UUID getID();
+
+    Boundary getBounds();
+
+    void generatePlants(int numberOfPlants);
 }
