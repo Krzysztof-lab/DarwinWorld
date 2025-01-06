@@ -32,4 +32,16 @@ public class AgingAnimal extends Animal {
             }
         }
     }
+
+    @Override
+    public AgingAnimal breed(Animal mate){
+        offspring++;
+        mate.increaseOffspring();
+        energy -= ENERGY_LOST;
+        mate.setEnergy(mate.getEnergy()-ENERGY_LOST);
+
+        List<Integer> newGenes = combineGenes(mate);
+
+        return new AgingAnimal(location, newGenes);
+    }
 }

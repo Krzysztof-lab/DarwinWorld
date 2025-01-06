@@ -22,6 +22,7 @@ public class Main {
         int n = 100;
         for (int i = 0; i < n; i++) {
             map.move(animal);
+            map.move(animal1);
             System.out.println(map);
             System.out.println(animal.getEnergy());
         }

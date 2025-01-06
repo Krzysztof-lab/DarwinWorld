@@ -117,6 +117,12 @@ public class Animal implements WorldElement {
         energy -= ENERGY_LOST;
         mate.setEnergy(mate.getEnergy()-ENERGY_LOST);
 
+        List<Integer> newGenes = combineGenes(mate);
+
+        return new Animal(location, newGenes);
+    }
+
+    protected List<Integer> combineGenes(Animal mate){
         float energy1 = energy;
         float energy2 = mate.getEnergy();
         int genInput1 = Math.round(energy1*(GENE_LEN/energy1+energy2));
@@ -127,13 +133,13 @@ public class Animal implements WorldElement {
         List<Integer> newGenes = new ArrayList<>();
 
         if(side == 0){
-             for(int i = 0; i < GENE_LEN; i++){
-                 if(i < genInput1) {
-                     newGenes.add(genes.get(i));
-                 } else {
-                     newGenes.add(genes2.get(i));
-                 }
-             }
+            for(int i = 0; i < GENE_LEN; i++){
+                if(i < genInput1) {
+                    newGenes.add(genes.get(i));
+                } else {
+                    newGenes.add(genes2.get(i));
+                }
+            }
         } else {
             for(int i = 0; i < GENE_LEN; i++){
                 if(i < genInput2) {
@@ -144,6 +150,6 @@ public class Animal implements WorldElement {
             }
         }
 
-        return new Animal(location, newGenes);
+        return newGenes;
     }
 }
