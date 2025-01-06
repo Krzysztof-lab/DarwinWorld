@@ -15,7 +15,7 @@ public class Plant implements WorldElement{
 
     @Override
     public boolean isAt(Vector2d position) {
-        return plantSpot == position;
+        return plantSpot.equals(position);
     }
 
     @Override

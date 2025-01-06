@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws IncorrectPositionException {
         System.out.println("Start");
 
-        WorldMap map = new SphericalMap(1,30,30,20);
+        WorldMap map = new SphericalMap(30,30,20);
         var simulation1 = new Simulation(map,20,10);
         simulation1.run();
 
