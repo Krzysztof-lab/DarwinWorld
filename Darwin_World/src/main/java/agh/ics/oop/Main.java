@@ -8,6 +8,11 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 public class Main {
     public static void main(String[] args) throws IncorrectPositionException {
         System.out.println("Start");
+
+        WorldMap map = new SphericalMap(1,30,30,20);
+        var simulation1 = new Simulation(map,20,10);
+        simulation1.run();
+
         /*
         var map = new SphericalMap(1,20,20,2);
         Animal animal = new Animal();
@@ -24,8 +29,6 @@ public class Main {
             System.out.println(animal.getEnergy());
         }
         */
-        WorldMap map = new SphericalMap(1,30,30,20);
-        var simulation1 = new Simulation(map,20,10);
-        simulation1.run();
+
     }
 }

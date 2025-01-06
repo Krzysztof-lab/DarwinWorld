@@ -20,31 +20,50 @@ public class SphericalMap extends AbstractWorldMap {
 
     public void generatePlants(int numberOfPlants) {
         Random random = new Random();
-        int Height = getBounds().upperRight().getY();
-        int middleStart = (int) Math.floor(Height * 0.4);
-        int middleEnd = (int) Math.ceil(Height * 0.6);
+        int height = getBounds().upperRight().getY();
+        int width = getBounds().upperRight().getX();
+        int middleStart = (int) Math.floor(height * 0.4);
+        int middleEnd = (int) Math.ceil(height * 0.6);
         int x, y;
+        int maxPlantsInEquator = (middleEnd - middleStart+1)*(width+1);
         for (int i = 0; i < numberOfPlants; i++) {
+            if(plants.size()==(height+1)*(width+1)) {
+                return;
+            }
             double randomValue = random.nextDouble();
             boolean switchPlace = randomValue >= 0.2;
             do {
-                x = random.nextInt(getBounds().upperRight().getX() + 1);
-                if (switchPlace) {
+                x = random.nextInt(width + 1);
+                if (switchPlace && plantsInEquator()<maxPlantsInEquator) {
                     y = random.nextInt(middleEnd - middleStart + 1) + middleStart;
                 } else {
                     if (random.nextBoolean()) {
                         // Zakres od 0 do middleStart
-                        y = random.nextInt(middleStart + 1);
+                        y = random.nextInt(middleStart);
                     } else {
                         // Zakres od middleEnd do Height
-                        y = random.nextInt(Height - middleEnd + 1) + middleEnd;
+                        y = random.nextInt(height - middleEnd) + middleEnd+1;
                     }
                 }
             }
-            while (plants.containsValue(new Vector2d(x, y)));
+            while (plants.containsKey(new Vector2d(x, y)) );
             plants.put(new Vector2d(x, y), new Plant(new Vector2d(x, y)));
         }
-
+    }
+    private int plantsInEquator() {
+        int height = getBounds().upperRight().getY();
+        int width = getBounds().upperRight().getX();
+        int middleStart = (int) Math.floor(height * 0.4);
+        int middleEnd = (int) Math.ceil(height * 0.6);
+        int count = 0;
+        for(int i=0;i<=width;i++) {
+            for (int j=middleStart;j<=middleEnd;j++) {
+                if (plants.containsKey(new Vector2d(i,j))){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
     @Override
     public WorldElement objectAt(Vector2d position) {
