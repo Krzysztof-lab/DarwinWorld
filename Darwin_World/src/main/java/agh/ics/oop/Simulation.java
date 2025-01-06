@@ -28,7 +28,9 @@ public class Simulation {
 
     }
     private void moving() {
-
+    for(Animal animal : animals) {
+        map.move(animal);
+    }
     }
     private void consumption() {
 
