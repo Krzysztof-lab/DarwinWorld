@@ -27,8 +27,7 @@ public class Main {
             map.move(animal);
             System.out.println(map);
             System.out.println(animal.getEnergy());
-        }
-        */
-
+        }*/
     }
 }
+

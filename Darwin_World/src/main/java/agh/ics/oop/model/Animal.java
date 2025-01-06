@@ -4,34 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.min;
 
 public class Animal implements WorldElement {
 
-    private int energy = 60;               //modyfikowalne
-    private static final int GENE_LEN = 200;       //modyfikowalne
-    private MapDirection currentDirection;
-    private Vector2d location;
-    private List<Integer> genes = new ArrayList<>();
-    private int age = 0;
-    private int plantsEaten = 0;
-    private int offspring = 0;
-    private boolean dead = false;
+    protected int energy = 60;               //modyfikowalne
+    protected static final int GENE_LEN = 20;       //modyfikowalne
+    protected MapDirection currentDirection;
+    protected Vector2d location;
+    protected List<Integer> genes = new ArrayList<>();
+    protected int age = 0;
+    protected int plantsEaten = 0;
+    protected int offspring = 0;
+    protected boolean dead = false;
 
     //Rozmnażanie i jedzenie - wszystko modyfikowalne
-    private static final int ENERGY_GAINED = 10;
-    private static final int ENERGY_LOST = 20;
-    private static final int ENERGY_REQUIRED = 30;
+    protected static final int ENERGY_GAINED = 10;
+    protected static final int ENERGY_LOST = 20;
+    protected static final int ENERGY_REQUIRED = 30;
 
-    // Starość nie radość
-    private static final float AGING_START = 30f;  // oba inty modyfikowalne
-    private static final float OLD_AGE = 70f;      // 80% na pominięcie ruchu
-    private static final float SKIP_TURN = 80/((OLD_AGE-AGING_START)*100);
-
-
-    public Animal() {
-        this(new Vector2d(2,2));    //losowy wektor na podstawie mapy
-    }
 
     public Animal(Vector2d location) {      // do spawnowania zwierzaków zupełnie nowych
         this.location = location;
@@ -99,12 +89,10 @@ public class Animal implements WorldElement {
     }
 
     public void move(AbstractWorldMap map) {
-        int currMove = genes.get(age);
-        Vector2d newLocation = location;
-        if(age < AGING_START || Math.random() > min(0.8, (age-AGING_START)*SKIP_TURN)) {
-            currentDirection = currentDirection.change(currMove);
-            newLocation = location.add(currentDirection.toUnitVector());
-        }
+        int currMove = genes.get(age%GENE_LEN);
+        currentDirection = currentDirection.change(currMove);
+        Vector2d newLocation = location.add(currentDirection.toUnitVector());
+
         if(map.canMoveTo(newLocation)){
             location = newLocation;
             location.setX(abs(location.getX() % map.getBounds().upperRight().getX()));
@@ -129,6 +117,12 @@ public class Animal implements WorldElement {
         energy -= ENERGY_LOST;
         mate.setEnergy(mate.getEnergy()-ENERGY_LOST);
 
+        List<Integer> newGenes = combineGenes(mate);
+
+        return new Animal(location, newGenes);
+    }
+
+    protected List<Integer> combineGenes(Animal mate){
         float energy1 = energy;
         float energy2 = mate.getEnergy();
         int genInput1 = Math.round(energy1*(GENE_LEN/energy1+energy2));
@@ -139,13 +133,13 @@ public class Animal implements WorldElement {
         List<Integer> newGenes = new ArrayList<>();
 
         if(side == 0){
-             for(int i = 0; i < GENE_LEN; i++){
-                 if(i < genInput1) {
-                     newGenes.add(genes.get(i));
-                 } else {
-                     newGenes.add(genes2.get(i));
-                 }
-             }
+            for(int i = 0; i < GENE_LEN; i++){
+                if(i < genInput1) {
+                    newGenes.add(genes.get(i));
+                } else {
+                    newGenes.add(genes2.get(i));
+                }
+            }
         } else {
             for(int i = 0; i < GENE_LEN; i++){
                 if(i < genInput2) {
@@ -156,8 +150,6 @@ public class Animal implements WorldElement {
             }
         }
 
-        return new Animal(location, newGenes);
+        return newGenes;
     }
-
-
 }
