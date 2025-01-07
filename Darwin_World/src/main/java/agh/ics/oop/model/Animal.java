@@ -8,7 +8,7 @@ import static java.lang.Math.abs;
 public class Animal implements WorldElement {
 
     protected int energy = 60;               //modyfikowalne
-    protected static final int GENE_LEN = 20;       //modyfikowalne
+    protected static final int GENE_LEN = 6;       //modyfikowalne
     protected MapDirection currentDirection;
     protected Vector2d location;
     protected List<Integer> genes = new ArrayList<>();
@@ -88,14 +88,19 @@ public class Animal implements WorldElement {
         return location.equals(position);
     }
 
-    public void move(AbstractWorldMap map) {
+    public void move(WorldMap map) {
         int currMove = genes.get(age%GENE_LEN);
         currentDirection = currentDirection.change(currMove);
         Vector2d newLocation = location.add(currentDirection.toUnitVector());
 
         if(map.canMoveTo(newLocation)){
             location = newLocation;
-            location.setX(abs(location.getX() % map.getBounds().upperRight().getX()));
+            if(location.getX() < 0){
+                location.setX(map.getBounds().upperRight().getX());
+            }
+            else if(location.getX() > map.getBounds().upperRight().getX()){
+                location.setX(0);
+            }
         } else {
             currentDirection = currentDirection.change(4);
         }
@@ -125,7 +130,7 @@ public class Animal implements WorldElement {
     protected List<Integer> combineGenes(Animal mate){
         float energy1 = energy;
         float energy2 = mate.getEnergy();
-        int genInput1 = Math.round(energy1*(GENE_LEN/energy1+energy2));
+        int genInput1 = Math.round(energy1*(GENE_LEN/(energy1+energy2)));
         int genInput2 = GENE_LEN-genInput1;
 
         List<Integer> genes2 = mate.getGenes();
