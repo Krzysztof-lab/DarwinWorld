@@ -13,6 +13,10 @@ public class Main {
         var simulation1 = new Simulation(map,20,10);
         simulation1.run();
 
+        for(Animal animal: map.getAnimals()) {
+            System.out.println(animal.getEnergy()+" "+animal.getPosition()+" "+animal.getAge());
+        }
+
         /*
         var map = new SphericalMap(1,20,20,2);
         Animal animal = new Animal();
@@ -28,6 +32,7 @@ public class Main {
             System.out.println(map);
             System.out.println(animal.getEnergy());
         }*/
+        System.out.println("End");
     }
 }
 

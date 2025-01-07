@@ -87,6 +87,7 @@ public class SphericalMap extends AbstractWorldMap {
         return elements;
     }
 
+
     public Boundary getBounds() {
         return bounds;
     }

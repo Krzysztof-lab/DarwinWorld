@@ -3,12 +3,12 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Simulation {
     private final WorldMap map;
-    private final ArrayList<Animal> animals = new ArrayList<>();
+    private final LinkedList<Animal> aliveAnimals = new LinkedList<>();
     private final int dailyGrowth;
     public Simulation(WorldMap map,int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
         this.map = map;
@@ -20,15 +20,20 @@ public class Simulation {
                 x = random.nextInt(map.getBounds().upperRight().getX() + 1);
                 y= random.nextInt(map.getBounds().upperRight().getY() + 1);
             } while (!map.place(new Animal(new Vector2d(x,y))));
-            animals.add(new Animal(new Vector2d(x,y)));
+            aliveAnimals.add(new Animal(new Vector2d(x,y)));
         }
     }
 
-    private void grabCorpses() {
-
+    public LinkedList<Animal> getAliveAnimals() {
+        return aliveAnimals;
     }
+
+    private void grabCorpses() {
+        aliveAnimals.removeIf(animal -> animal.getEnergy() <= 0);
+    }
+
     private void moving() {
-    for(Animal animal : animals) {
+    for(Animal animal : aliveAnimals) {
         map.move(animal);
     }
     }

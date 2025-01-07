@@ -48,6 +48,8 @@ public interface WorldMap extends MoveValidator {
 
     List<WorldElement> getElements();
 
+    List<Animal> getAnimals();
+
     UUID getID();
 
     Boundary getBounds();
