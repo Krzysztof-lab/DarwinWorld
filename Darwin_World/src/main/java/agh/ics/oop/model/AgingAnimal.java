@@ -20,7 +20,7 @@ public class AgingAnimal extends Animal {
     }
 
     @Override
-    public void move(AbstractWorldMap map) {
+    public void move(WorldMap map) {
         if(age < AGING_START || Math.random() > min(0.8, (age-AGING_START)*SKIP_TURN)){
             super.move(map);
         }
