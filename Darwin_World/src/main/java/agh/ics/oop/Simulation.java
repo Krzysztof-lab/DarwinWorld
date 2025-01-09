@@ -15,12 +15,14 @@ public class Simulation {
         this.dailyGrowth = dailyGrowth;
         Random random = new Random();
         int x, y;
+        Animal newborn;
         for (int i = 0; i < startingAnimals; i++) {
             do {
                 x = random.nextInt(map.getBounds().upperRight().getX() + 1);
-                y= random.nextInt(map.getBounds().upperRight().getY() + 1);
-            } while (!map.place(new Animal(new Vector2d(x,y))));
-            aliveAnimals.add(new Animal(new Vector2d(x,y)));
+                y = random.nextInt(map.getBounds().upperRight().getY() + 1);
+                newborn = new Animal(new Vector2d(x, y));
+            } while (!map.place(newborn));
+            aliveAnimals.add(newborn);
         }
     }
 
@@ -55,7 +57,7 @@ public class Simulation {
     }
 
     public void run() {
-        for(int i=0;i<100;i++)
+        for(int i=0;i<10;i++)
         {
             day();
             System.out.println("Day "+i+": ");

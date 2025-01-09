@@ -4,6 +4,7 @@ import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WorldMap;
 import agh.ics.oop.model.util.IncorrectPositionException;
+import javafx.application.Application;
 
 public class Main {
     public static void main(String[] args) throws IncorrectPositionException {
@@ -13,25 +14,13 @@ public class Main {
         var simulation1 = new Simulation(map,20,10);
         simulation1.run();
 
-        for(Animal animal: map.getAnimals()) {
-            System.out.println(animal.getEnergy()+" "+animal.getPosition()+" "+animal.getAge());
-        }
 
-        /*
-        var map = new SphericalMap(1,20,20,2);
-        Animal animal = new Animal();
         try {
-            map.place(animal);
-        } catch (IncorrectPositionException e) {
-            System.out.println("Nie można umieścić zwierzęcia: " + e.getMessage());
+            Application.launch(SimulationApp.class, args);
         }
-        System.out.println(map);
-        int n = animal.getGenes().size();
-        for (int i = 0; i < n; i++) {
-            map.move(animal);
-            System.out.println(map);
-            System.out.println(animal.getEnergy());
-        }*/
+        catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("End");
     }
 }

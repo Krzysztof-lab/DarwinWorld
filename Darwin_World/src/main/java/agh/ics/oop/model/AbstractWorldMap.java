@@ -29,10 +29,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public void move(Animal animal) {
         Vector2d prevPos = animal.getPosition();
-        animal.move(this);
-//        animals.remove(prevPos);
         animals.remove(animal);
-//        animals.put(animal.getPosition(), animal);
+        animal.move(this);
         animals.put(animal, animal.getPosition());
         mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
     }
@@ -74,7 +72,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public ArrayList<Animal> getAnimals() {
-        return new ArrayList<>(animals.values());
+        return new ArrayList<>(animals.keySet());
     }
     public abstract Boundary getBounds();
 
