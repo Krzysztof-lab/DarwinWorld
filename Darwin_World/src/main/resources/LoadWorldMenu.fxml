@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            minHeight="900" minWidth="1350"
+            fx:controller="agh.ics.oop.presenter.LoadWorldPresenter"
+            stylesheets="@styles.css">
+
+    <center>
+        <StackPane>
+            <ImageView fitHeight="900" fitWidth="1350">
+                <Image url="@MainMenu.png"  />
+            </ImageView>
+
+            <VBox spacing="15" alignment="CENTER">
+                <Button text="Default" onAction="#onStartClickDefault" styleClass="button"/>
+                <Button text="Ebb and Flow" onAction="#onStartClickWater" styleClass="button"/>
+                <Button text="Once a man, twice a child" onAction="#onStartClickAging" styleClass="button"/>
+                <Label style="-fx-font-size: 10; -fx-background-color: transparent; -fx-border-color: transparent;" />
+                <Button fx:id="backButton" text="Back to Menu" onAction="#onBackToMenuClick" styleClass="button"/>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

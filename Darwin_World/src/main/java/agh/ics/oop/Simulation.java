@@ -10,6 +10,7 @@ public class Simulation {
     private final WorldMap map;
     private final LinkedList<Animal> aliveAnimals = new LinkedList<>();
     private final int dailyGrowth;
+
     public Simulation(WorldMap map,int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
         this.map = map;
         this.dailyGrowth = dailyGrowth;
@@ -60,6 +61,11 @@ public class Simulation {
         for(int i=0;i<10;i++)
         {
             day();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Day "+i+": ");
             System.out.println(map);
         }
