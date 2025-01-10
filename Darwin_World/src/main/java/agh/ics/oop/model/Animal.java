@@ -50,7 +50,7 @@ public class Animal implements WorldElement {
     public MapDirection getCurrentDirection() {
         return currentDirection;
     }
-        public int getAge() {
+    public int getAge() {
         return age;
     }
     public int getEnergy() {
@@ -157,4 +157,5 @@ public class Animal implements WorldElement {
 
         return newGenes;
     }
+
 }

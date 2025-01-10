@@ -25,8 +25,12 @@ public interface WorldMap extends MoveValidator {
     /**
      * Moves an animal (if it is present on the map) according to specified direction.
      * If the move is not possible, this method has no effect.
+     *
+     * @return
      */
-    void move(Animal animal);
+//    void move(Animal animal);
+
+    List<Animal> move();
 
     /**
      * Return true if given position on the map is occupied. Should not be

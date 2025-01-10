@@ -5,10 +5,11 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Simulation {
     private final WorldMap map;
-    private final LinkedList<Animal> aliveAnimals = new LinkedList<>();
+    private LinkedList<Animal> aliveAnimals = new LinkedList<>();
     private final int dailyGrowth;
     public Simulation(WorldMap map,int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
         this.map = map;
@@ -33,9 +34,10 @@ public class Simulation {
     }
 
     private void moving() {
-    for(Animal animal : aliveAnimals) {
-        map.move(animal);
-    }
+//    for(Animal animal : aliveAnimals) {
+//        map.move(animal);
+//    }
+    aliveAnimals = new LinkedList<>(map.move());
     }
     private void consumption() {
 

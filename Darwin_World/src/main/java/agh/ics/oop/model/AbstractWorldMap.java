@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Boundary;
-import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
@@ -27,14 +26,19 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal) {
-        Vector2d prevPos = animal.getPosition();
-        animal.move(this);
+    public List<Animal> move() {
+
+        Set<Animal> startAnimals = new HashSet<>(animals.keySet());
+        for(Animal animal : startAnimals) {
+            Vector2d prevPos = animal.getPosition();
+            animal.move(this);
 //        animals.remove(prevPos);
-        animals.remove(animal);
+            animals.remove(animal);
 //        animals.put(animal.getPosition(), animal);
-        animals.put(animal, animal.getPosition());
-        mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
+            animals.put(animal, animal.getPosition());
+            mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
+        }
+        return animals.keySet().stream().toList();
     }
 
     @Override
@@ -74,7 +78,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public ArrayList<Animal> getAnimals() {
-        return new ArrayList<>(animals.values());
+        return new ArrayList<>(animals.keySet());
     }
     public abstract Boundary getBounds();
 
