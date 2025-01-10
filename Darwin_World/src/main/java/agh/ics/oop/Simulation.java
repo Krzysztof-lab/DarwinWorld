@@ -3,13 +3,15 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Simulation {
     private final WorldMap map;
-    private LinkedList<Animal> aliveAnimals = new LinkedList<>();
+    private Set<Animal> aliveAnimals = new HashSet<>();
     private final int dailyGrowth;
     public Simulation(WorldMap map,int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
         this.map = map;
@@ -25,9 +27,9 @@ public class Simulation {
         }
     }
 
-    public LinkedList<Animal> getAliveAnimals() {
-        return aliveAnimals;
-    }
+//    public LinkedList<Animal> getAliveAnimals() {
+//        return aliveAnimals;
+//    }
 
     private void grabCorpses() {
         aliveAnimals.removeIf(animal -> animal.getEnergy() <= 0);
@@ -37,7 +39,7 @@ public class Simulation {
 //    for(Animal animal : aliveAnimals) {
 //        map.move(animal);
 //    }
-    aliveAnimals = new LinkedList<>(map.move());
+    aliveAnimals = map.move();
     }
     private void consumption() {
 

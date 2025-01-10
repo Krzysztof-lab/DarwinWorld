@@ -26,7 +26,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public List<Animal> move() {
+    public Set<Animal> move() {
 
         Set<Animal> startAnimals = new HashSet<>(animals.keySet());
         for(Animal animal : startAnimals) {
@@ -38,7 +38,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             animals.put(animal, animal.getPosition());
             mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
         }
-        return animals.keySet().stream().toList();
+        return animals.keySet();
     }
 
     @Override

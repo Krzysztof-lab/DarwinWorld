@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -30,7 +31,7 @@ public interface WorldMap extends MoveValidator {
      */
 //    void move(Animal animal);
 
-    List<Animal> move();
+    Set<Animal> move();
 
     /**
      * Return true if given position on the map is occupied. Should not be
