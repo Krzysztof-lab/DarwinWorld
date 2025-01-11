@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import javafx.scene.image.ImageView;
+
 public class Water implements WorldElement {
     private final Vector2d waterSource;
     private final int range = 0;

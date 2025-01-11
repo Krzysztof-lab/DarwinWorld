@@ -7,20 +7,23 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="900" minWidth="1350"
+            minHeight="600" minWidth="900"
             fx:controller="agh.ics.oop.presenter.LoadWorldPresenter"
             stylesheets="@styles.css">
 
     <center>
         <StackPane>
-            <ImageView fitHeight="900" fitWidth="1350">
+            <ImageView fitHeight="600" fitWidth="900">
                 <Image url="@MainMenu.png"  />
             </ImageView>
 
             <VBox spacing="15" alignment="CENTER">
+                <CheckBox fx:id="saveToFileCheckBox" text="Save data to file" GridPane.columnIndex="3"/>
                 <Button text="Default" onAction="#onStartClickDefault" styleClass="button"/>
                 <Button text="Ebb and Flow" onAction="#onStartClickWater" styleClass="button"/>
                 <Button text="Once a man, twice a child" onAction="#onStartClickAging" styleClass="button"/>
+                <ComboBox fx:id="configurationComboBox" promptText="Select Configuration" styleClass="button"/>
+                <Button text="Load Configuration" onAction="#onLoadConfiguration" styleClass="button"/>
                 <Label style="-fx-font-size: 10; -fx-background-color: transparent; -fx-border-color: transparent;" />
                 <Button fx:id="backButton" text="Back to Menu" onAction="#onBackToMenuClick" styleClass="button"/>
             </VBox>
