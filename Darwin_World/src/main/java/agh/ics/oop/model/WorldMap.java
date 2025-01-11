@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.UUID;
 
 /**
@@ -51,6 +52,8 @@ public interface WorldMap extends MoveValidator {
     List<WorldElement> getElements();
 
     List<Animal> getAnimals();
+
+    void addObserver(MapChangeListener observer);
 
     UUID getID();
 

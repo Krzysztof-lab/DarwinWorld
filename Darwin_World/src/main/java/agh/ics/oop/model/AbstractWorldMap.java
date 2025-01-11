@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Boundary;
-import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
@@ -82,6 +81,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         return visualizer.draw(bounds.lowerLeft(), bounds.upperRight());
     }
 
+    @Override
     public void addObserver(MapChangeListener observer) {
         observers.add(observer);
     }
