@@ -100,52 +100,35 @@
     -fx-border-color: #7e3ed5; /* Fioletowy border */
 }
 
-
-
-
-
-/* Stylizacja suwaków */
-.slider {
-    -fx-base: #7e3ed5; /* Kolor tła */
-    -fx-background-color: #7e3ed5;
-    -fx-control-inner-background: #6218ca; /* Tło wypełnienia suwaka */
-    -fx-padding: 5px; /* Odstęp wokół suwaka */
-}
-
-/* Styl dla suwaka, aby był bardziej widoczny */
-.slider .track {
-    -fx-background-color: #9b4ee0;
-    -fx-background-insets: 0, 0 0 0;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-}
-
-/* Styl dla suwaka - wypełnienie (wskaźnik suwaka) */
-.slider .thumb {
-    -fx-background-color: #e6b26b;
-    -fx-background-radius: 50%;
-    -fx-border-color: #9b4ee0;
-    -fx-border-width: 2px;
-    -fx-pref-width: 20px;
-    -fx-pref-height: 20px;
-}
-
-/* Styl etykiet w sliderze */
-.slider .tick-mark {
-    -fx-background-color: #e6b26b;
-}
-
-/* Dodatkowy styl dla etykiet (wartości) */
-.slider .tick-label {
-    -fx-text-fill: #e6b26b;
-    -fx-font-family: 'Pixelify Sans', monospace;
-    -fx-font-size: 14px;
-}
-
-/* Styl dla wartości suwaka */
-.slider .value {
+/* Stylizacja CheckBox */
+.check-box {
     -fx-font-family: 'Pixelify Sans', monospace;
     -fx-font-size: 16px;
-    -fx-text-fill: #e6b26b;
+    -fx-text-fill: #e6b26b; /* Żółty tekst */
+    -fx-background-color: rgba(0, 0, 0, 0.5); /* Półprzezroczyste tło za tekstem */
+    -fx-border-color: #7e3ed5; /* Fioletowy border */
+    -fx-border-width: 2px;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 3, 0.5, 0, 1);
 }
 
+/* Hover efekty dla CheckBox */
+.check-box:hover {
+    -fx-border-color: #9b4ee0; /* Jaśniejszy fiolet */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 5, 0.5, 0, 2);
+}
+
+/* Styl dla zaznaczonego CheckBox */
+.check-box:selected {
+    -fx-background-color: #6218ca; /* Fioletowe tło */
+    -fx-border-color: #9b4ee0; /* Jaśniejszy fiolet */
+    -fx-text-fill: #e6b26b; /* Żółty tekst */
+}
+
+/* Styl dla CheckBox w trybie "focused" */
+.check-box:focused {
+    -fx-border-color: #9b4ee0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 6, 0.5, 0, 3);
+}

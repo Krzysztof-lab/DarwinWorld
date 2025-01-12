@@ -1,7 +1,11 @@
 package agh.ics.oop.model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Math.abs;
 
@@ -83,6 +87,7 @@ public class Animal implements WorldElement {
     public String toString() {
         return "%s".formatted(currentDirection);
     }
+
 
     public boolean isAt(Vector2d position) {
         return location.equals(position);

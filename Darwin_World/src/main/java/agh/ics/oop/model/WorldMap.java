@@ -53,7 +53,6 @@ public interface WorldMap extends MoveValidator {
 
     List<Animal> getAnimals();
 
-    void addObserver(MapChangeListener observer);
 
     UUID getID();
 
