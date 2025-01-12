@@ -21,7 +21,7 @@ class AnimalTest {
     @Test
     void goodMoveTest(){
         //given
-        WorldMap map = new SphericalMap(1,5,5,0);
+        WorldMap map = new SphericalMap(5,5,0);
         List<Integer> genes = List.of(0,1);
         Animal animal = new Animal(new Vector2d(2,2), genes);
         Animal animal1 = new Animal(new Vector2d(0,0), genes);
@@ -41,7 +41,7 @@ class AnimalTest {
     @Test
     void outOfBoundsMoveTest(){
         //given
-        WorldMap map = new SphericalMap(1,2,2,0);
+        WorldMap map = new SphericalMap(2,2,0);
         Animal animal = new Animal(new Vector2d(2,2), List.of(0,0));
 
         //when
@@ -55,7 +55,7 @@ class AnimalTest {
     @Test
     void aroundTheMapMoveTest(){
         //given
-        WorldMap map = new SphericalMap(1,3,3,0);
+        WorldMap map = new SphericalMap(3,3,0);
         Animal animal = new Animal(new Vector2d(2,2), List.of(2,0));
         Animal animal1 = new Animal(new Vector2d(0,0), List.of(6,0));
 

@@ -3,6 +3,7 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
+import agh.ics.oop.model.util.Parameters;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -142,6 +143,7 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
+
     public void onSimulationStartClicked() {
         Thread simulationThread = new Thread(simulation::run);
         simulationThread.start();
@@ -242,5 +244,6 @@ public class SimulationPresenter implements MapChangeListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

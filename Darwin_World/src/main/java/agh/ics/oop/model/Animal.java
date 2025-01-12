@@ -1,18 +1,21 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Parameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
+//testy sie zepsuly btw
 public class Animal implements WorldElement {
 
-    protected int energy = 60;               //modyfikowalne
-    protected static final int GENE_LEN = 6;       //modyfikowalne
+    protected int energy;
     protected MapDirection currentDirection;
     protected Vector2d location;
     protected List<Integer> genes = new ArrayList<>();
@@ -20,28 +23,27 @@ public class Animal implements WorldElement {
     protected int plantsEaten = 0;
     protected int offspring = 0;
     protected boolean dead = false;
+    protected Parameters parameters;
 
-    //Rozmnażanie i jedzenie - wszystko modyfikowalne
-    protected static final int ENERGY_GAINED = 10;
-    protected static final int ENERGY_LOST = 20;
-    protected static final int ENERGY_REQUIRED = 30;
-
-
-    public Animal(Vector2d location) {      // do spawnowania zwierzaków zupełnie nowych
+    public Animal(Vector2d location, Parameters parameters) {      // do spawnowania zwierzaków zupełnie nowych
         this.location = location;
+        this.parameters = parameters;
         this.currentDirection = MapDirection.NORTH;
+        this.energy = parameters.startingEnergy();
         makeGenes();
     }
 
-    public Animal(Vector2d location, List<Integer> genes) {     // do spawnowania potomstwa
+    public Animal(Vector2d location, List<Integer> genes, Parameters parameters) {     // do spawnowania potomstwa
         this.location = location;
         this.currentDirection = MapDirection.NORTH;
         this.genes = genes;
-        this.energy = 2*ENERGY_LOST;
+        this.energy = 2*parameters.childEnergy();
+        this.parameters = parameters;
     }
 
+
     private void makeGenes(){
-        for(int i = 0; i < GENE_LEN; i++){
+        for(int i = 0; i < parameters.geneLength(); i++){
             this.genes.add((int) Math.round((Math.random()*7)));
         }
     }
@@ -94,7 +96,7 @@ public class Animal implements WorldElement {
     }
 
     public void move(WorldMap map) {
-        int currMove = genes.get(age%GENE_LEN);
+        int currMove = genes.get(age % parameters.geneLength());
         currentDirection = currentDirection.change(currMove);
         Vector2d newLocation = location.add(currentDirection.toUnitVector());
 
@@ -118,32 +120,32 @@ public class Animal implements WorldElement {
 
     public void eat(){
         plantsEaten++;
-        energy += ENERGY_GAINED;
+        energy += parameters.eatingEnergy();
     }
 
     public Animal breed(Animal mate){
         offspring++;
         mate.increaseOffspring();
-        energy -= ENERGY_LOST;
-        mate.setEnergy(mate.getEnergy()-ENERGY_LOST);
+        energy -= parameters.childEnergy();
+        mate.setEnergy(mate.getEnergy()-parameters.childEnergy());
 
         List<Integer> newGenes = combineGenes(mate);
 
-        return new Animal(location, newGenes);
+        return new Animal(location, newGenes, parameters);
     }
 
     protected List<Integer> combineGenes(Animal mate){
         float energy1 = energy;
         float energy2 = mate.getEnergy();
-        int genInput1 = Math.round(energy1*(GENE_LEN/(energy1+energy2)));
-        int genInput2 = GENE_LEN-genInput1;
+        int genInput1 = Math.round(energy1*(parameters.geneLength()/(energy1+energy2)));
+        int genInput2 = parameters.geneLength()-genInput1;
 
         List<Integer> genes2 = mate.getGenes();
         int side = (int) Math.round(Math.random());
         List<Integer> newGenes = new ArrayList<>();
 
         if(side == 0){
-            for(int i = 0; i < GENE_LEN; i++){
+            for(int i = 0; i < parameters.geneLength(); i++){
                 if(i < genInput1) {
                     newGenes.add(genes.get(i));
                 } else {
@@ -151,13 +153,20 @@ public class Animal implements WorldElement {
                 }
             }
         } else {
-            for(int i = 0; i < GENE_LEN; i++){
+            for(int i = 0; i < parameters.geneLength(); i++){
                 if(i < genInput2) {
                     newGenes.add(genes2.get(i));
                 } else {
                     newGenes.add(genes.get(i));
                 }
             }
+        }
+
+        // Mutacja
+        int mutatedGenes = (int)Math.round(Math.random()*parameters.geneLength());
+        for(int i = 0; i < mutatedGenes; i++){
+            int whichGene = (int)Math.round(Math.random()*(parameters.geneLength()-1));
+            newGenes.set(whichGene, (int)Math.round(Math.random()*7));
         }
 
         return newGenes;

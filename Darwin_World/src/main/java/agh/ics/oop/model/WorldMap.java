@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observer;
 import java.util.UUID;
 
@@ -47,11 +48,13 @@ public interface WorldMap extends MoveValidator {
      */
     WorldElement objectAt(Vector2d position);
 
-    List<WorldElement> objectsAt(Vector2d position);
+    List<Animal> animalsAt(Vector2d position);
 
     List<WorldElement> getElements();
 
-    List<Animal> getAnimals();
+    Map<Animal,Vector2d> getAnimals();
+
+    Map<Vector2d, Plant> getPlants();
 
 
     UUID getID();

@@ -10,7 +10,8 @@ import java.util.Random;
 public class SphericalMap extends AbstractWorldMap {
 
     private final Boundary bounds;
-    private final Map<Vector2d, Plant> plants = new HashMap<>();
+//    private final Map<Vector2d, Plant> plants = new HashMap<>();
+
     public SphericalMap(int width, int height,int numberOfPlants) {
         Vector2d upperRight = new Vector2d(width-1,height-1);
         Vector2d lowerLeft = new Vector2d(0, 0);
@@ -73,8 +74,7 @@ public class SphericalMap extends AbstractWorldMap {
         }
         return plants.get(position);
     }
-    
-    //Dla biegunów, trzeba zmienić po dodaniu przypływów
+
     @Override
     public boolean canMoveTo(Vector2d position) {
         return position.getY() <= bounds.upperRight().getY() && position.getY() >= bounds.lowerLeft().getY();
@@ -86,6 +86,7 @@ public class SphericalMap extends AbstractWorldMap {
         elements.addAll(plants.values());
         return elements;
     }
+
 
 
     public Boundary getBounds() {
