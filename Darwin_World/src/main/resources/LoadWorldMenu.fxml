@@ -18,9 +18,12 @@
             </ImageView>
 
             <VBox spacing="15" alignment="CENTER">
+                <CheckBox fx:id="saveToFileCheckBox" text="Save data to file" GridPane.columnIndex="3"/>
                 <Button text="Default" onAction="#onStartClickDefault" styleClass="button"/>
                 <Button text="Ebb and Flow" onAction="#onStartClickWater" styleClass="button"/>
                 <Button text="Once a man, twice a child" onAction="#onStartClickAging" styleClass="button"/>
+                <ComboBox fx:id="configurationComboBox" promptText="Select Configuration" styleClass="button"/>
+                <Button text="Load Configuration" onAction="#onLoadConfiguration" styleClass="button"/>
                 <Label style="-fx-font-size: 10; -fx-background-color: transparent; -fx-border-color: transparent;" />
                 <Button fx:id="backButton" text="Back to Menu" onAction="#onBackToMenuClick" styleClass="button"/>
             </VBox>

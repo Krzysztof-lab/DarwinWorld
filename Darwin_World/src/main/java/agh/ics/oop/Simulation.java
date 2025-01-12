@@ -4,13 +4,17 @@ import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.Parameters;
 
+
 import java.util.*;
+
 
 public class Simulation {
     private final WorldMap map;
     private final LinkedList<Animal> aliveAnimals = new LinkedList<>();
     private final int dailyGrowth;
     private final Parameters parameters;
+    private final List<MapChangeListener> observers = new ArrayList<>();
+
 
     public Simulation(WorldMap map, Parameters parameters) throws IncorrectPositionException {
         this.map = map;
@@ -31,6 +35,12 @@ public class Simulation {
 
     public LinkedList<Animal> getAliveAnimals() {
         return aliveAnimals;
+    }
+    public WorldMap getMap() {
+        return map;
+    }
+    public int getDay() {
+        return day;
     }
 
     private void grabCorpses() {
@@ -127,26 +137,68 @@ public class Simulation {
     private void day()  {
         grabCorpses();
         moving();
+        mapChanged("Animals moved");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         consumption();
         breeding();
+        mapChanged("Animals were bred");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         growth();
+        mapChanged("Plants were grown");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void run()  {
-        for(int i=0;i<10;i++)
+    private int day=1;
+    public void run() {
+        while(!aliveAnimals.isEmpty())
         {
+            if (paused) {
+                synchronized (this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+
             day();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("Day "+i+": ");
-            System.out.println("Animals on map: "+aliveAnimals.size());
-            for(Animal animal : aliveAnimals){
-                System.out.println(animal.getPosition() +" "+ animal.getEnergy() + " "+ animal.getOffspring() );
-            }
+            System.out.println("Day "+day+": ");
+            day++;
             System.out.println(map);
         }
+    }
+    private boolean paused = false;
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+        synchronized (this) {
+            notify();
+        }
+    }
+
+    private void mapChanged(String message) {
+        for(MapChangeListener observer : observers) {
+            observer.mapChanged(map, message);
+        }
+    }
+
+    public void addObserver(MapChangeListener observer) {
+        observers.add(observer);
     }
 }

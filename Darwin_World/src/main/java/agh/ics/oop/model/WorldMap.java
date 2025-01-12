@@ -56,7 +56,6 @@ public interface WorldMap extends MoveValidator {
 
     Map<Vector2d, Plant> getPlants();
 
-    void addObserver(MapChangeListener observer);
 
     UUID getID();
 

@@ -5,15 +5,44 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            minHeight="600" minWidth="900"
-            fx:controller="agh.ics.oop.presenter.SimulationPresenter">
-    <center>
-        <VBox spacing="10" alignment="CENTER">
-            <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER"/>
-            <Label fx:id="outLabel"/>
-            <Button fx:id="startButton" text="START" onAction="#onSimulationStartClicked"/>
-        </VBox>
-    </center>
-</BorderPane>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           minHeight="600" minWidth="900"
+           fx:controller="agh.ics.oop.presenter.SimulationPresenter"
+           stylesheets="@stylesSimulation.css">
+
+    <!-- Globalne tło -->
+    <ImageView fitHeight="600" fitWidth="900">
+        <Image url="@backgroundSimulation.png" />
+    </ImageView>
+
+    <!-- Właściwy układ -->
+    <BorderPane>
+        <center>
+            <VBox alignment="CENTER">
+                <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" />
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="startButton" text="START" onAction="#onSimulationStartClicked" styleClass="button"/>
+                    <Button fx:id="pauseButton" text="PAUSE" onAction="#onPauseButtonClicked" styleClass="button"/>
+                </HBox>
+            </VBox>
+        </center>
+        <left>
+            <VBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="animalsCountLabel" text="Alive animals:" />
+                <Label fx:id="plantsCountLabel" text="Total Plants:" />
+                <Label fx:id="freeSpacesCountLabel" text="Free Spaces:" />
+                <Label fx:id="mostCommonGenotypeLabel" text="Most Common Genotype:           " />
+                <Label fx:id="avgEnergyLabel" text="Average Energy:" />
+                <Label fx:id="avgLifespanLabel" text="Average Lifespan (dead):" />
+                <Label fx:id="avgOffspringLabel" text="Average Offspring:" />
+            </VBox>
+        </left>
+    </BorderPane>
+</StackPane>

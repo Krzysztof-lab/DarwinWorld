@@ -8,19 +8,15 @@ import java.util.*;
 public abstract class AbstractWorldMap implements WorldMap {
 
     protected final Map<Animal, Vector2d> animals = new HashMap<>();
-    //protected final Map<Vector2d, Animal> animals = new HashMap<>();
     protected final Map<Vector2d, Plant> plants = new HashMap<>();
     protected final MapVisualizer visualizer = new MapVisualizer(this);
-    protected final List<MapChangeListener> observers = new ArrayList<>();
     protected final UUID mapID = UUID.randomUUID();
 
 
     @Override
     public boolean place(Animal animal) {
         if(canMoveTo(animal.getPosition())) {
-//            this.animals.put(animal.getPosition(), animal);
             this.animals.put(animal, animal.getPosition());
-            mapChanged("Animal placed at " + animal.getPosition());
             return true;
         }
         return false;
@@ -32,7 +28,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         animals.remove(animal);
         animal.move(this);
         animals.put(animal, animal.getPosition());
-        mapChanged("Animal moved from " + prevPos + " to " + animal.getPosition());
     }
 
     @Override
@@ -83,21 +78,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     public String toString() {
         Boundary bounds = getBounds();
         return visualizer.draw(bounds.lowerLeft(), bounds.upperRight());
-    }
-
-    @Override
-    public void addObserver(MapChangeListener observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(MapChangeListener observer) {
-        observers.remove(observer);
-    }
-
-    protected void mapChanged(String message) {
-        for(MapChangeListener observer : observers) {
-            observer.mapChanged(this, message);
-        }
     }
 
     @Override
