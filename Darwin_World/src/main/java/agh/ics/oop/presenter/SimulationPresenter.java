@@ -5,6 +5,7 @@ import agh.ics.oop.model.MapChangeListener;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
 import agh.ics.oop.model.util.IncorrectPositionException;
+import agh.ics.oop.model.util.Parameters;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -89,7 +90,7 @@ public class SimulationPresenter implements MapChangeListener {
 
 
     public void onSimulationStartClicked() throws IncorrectPositionException {
-        Simulation simulation = new Simulation(this.map, 20,10);
+        Simulation simulation = new Simulation(this.map, new Parameters(20,20,20,4,10,40,10,20,15,6));
         Thread simulationThread = new Thread(simulation::run);
         simulationThread.start();
     }

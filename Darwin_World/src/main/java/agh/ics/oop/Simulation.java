@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.IncorrectPositionException;
+import agh.ics.oop.model.util.Parameters;
 
 import java.util.*;
 
@@ -9,18 +10,20 @@ public class Simulation {
     private final WorldMap map;
     private final LinkedList<Animal> aliveAnimals = new LinkedList<>();
     private final int dailyGrowth;
+    private final Parameters parameters;
 
-    public Simulation(WorldMap map,int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
+    public Simulation(WorldMap map, Parameters parameters) throws IncorrectPositionException {
         this.map = map;
-        this.dailyGrowth = dailyGrowth;
+        this.dailyGrowth = parameters.plantGrowth();
+        this.parameters = parameters;
         Random random = new Random();
         int x, y;
         Animal newborn;
-        for (int i = 0; i < startingAnimals; i++) {
+        for (int i = 0; i < parameters.startingAnimals(); i++) {
             do {
                 x = random.nextInt(map.getBounds().upperRight().getX() + 1);
                 y = random.nextInt(map.getBounds().upperRight().getY() + 1);
-                newborn = new Animal(new Vector2d(x, y));
+                newborn = new Animal(new Vector2d(x, y), parameters);
             } while (!map.place(newborn));
             aliveAnimals.add(newborn);
         }
@@ -61,7 +64,6 @@ public class Simulation {
         }
     }
 
-    //sprawdzaj czy maja wystarczajaca ilosc energii
     private void breeding() {
         List<Animal> children = new ArrayList<>();
 
@@ -76,6 +78,9 @@ public class Simulation {
                     animals.remove(mate1);
                     Animal mate2 = animalPriority(animals);
                     animals.remove(mate2);
+                    if(mate1.getEnergy() < parameters.breedingEnergy() || mate2.getEnergy() < parameters.breedingEnergy()){
+                        break;
+                    }
                     Animal child = mate1.breed(mate2);
                     try {
                         if (map.place(child)) {

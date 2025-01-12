@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Parameters;
+
 import java.util.List;
 
 import static java.lang.Math.min;
@@ -11,12 +13,12 @@ public class AgingAnimal extends Animal {
     private static final float OLD_AGE = 70f;
     private static final float SKIP_TURN = 80/((OLD_AGE-AGING_START)*100);
 
-    public AgingAnimal(Vector2d location) {
-        super(location);
+    public AgingAnimal(Vector2d location, Parameters parameters) {
+        super(location, parameters);
     }
 
-    public AgingAnimal(Vector2d location, List<Integer> genes) {
-        super(location, genes);
+    public AgingAnimal(Vector2d location, List<Integer> genes, Parameters parameters) {
+        super(location, genes, parameters);
     }
 
     @Override
@@ -37,11 +39,11 @@ public class AgingAnimal extends Animal {
     public AgingAnimal breed(Animal mate){
         offspring++;
         mate.increaseOffspring();
-        energy -= ENERGY_LOST;
-        mate.setEnergy(mate.getEnergy()-ENERGY_LOST);
+        energy -= parameters.childEnergy();
+        mate.setEnergy(mate.getEnergy()-parameters.childEnergy());
 
         List<Integer> newGenes = combineGenes(mate);
 
-        return new AgingAnimal(location, newGenes);
+        return new AgingAnimal(location, newGenes, parameters);
     }
 }
