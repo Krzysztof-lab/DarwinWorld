@@ -3,6 +3,7 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WaterMap;
 import agh.ics.oop.model.util.IncorrectPositionException;
+import agh.ics.oop.model.util.Parameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +45,7 @@ public class LoadWorldPresenter {
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
             simulationPresenter.setWorldMap(new SphericalMap(10,10,10));
-            simulationPresenter.setSimulation(20,5);
+            simulationPresenter.setSimulation(new Parameters(5,10,100,10,30, 20,5));
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -126,7 +127,7 @@ public class LoadWorldPresenter {
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
             simulationPresenter.setWorldMap(new SphericalMap(30,30,30));
-            simulationPresenter.setSimulation(30,10);
+            //simulationPresenter.setSimulation(30,10);
             simulationPresenter.addObserver(simulationPresenter);
 
             Stage simulationStage = new Stage();

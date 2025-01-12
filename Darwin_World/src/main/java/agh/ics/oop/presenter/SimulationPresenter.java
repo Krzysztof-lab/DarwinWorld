@@ -48,8 +48,8 @@ public class SimulationPresenter implements MapChangeListener {
         height = Math.round( (float) MAP_MAX_HEIGHT /mapHeight);
     }
 
-    public void setSimulation(int startingAnimals,int dailyGrowth) throws IncorrectPositionException {
-        this.simulation = new Simulation(map, startingAnimals, dailyGrowth);
+    public void setSimulation(Parameters parameters) throws IncorrectPositionException {
+        this.simulation = new Simulation(map, parameters);
     }
 
     public void addObserver(MapChangeListener observer) {
@@ -177,7 +177,7 @@ public class SimulationPresenter implements MapChangeListener {
         int totalPlants = simulation.getMap().getElements().size() - simulation.getMap().getAnimals().size();
         int freeSpaces = this.freeSpaces;
 
-        Map<String, Long> genotypeCount = simulation.getMap().getAnimals().stream()
+        Map<String, Long> genotypeCount = simulation.getMap().getAnimals().keySet().stream()
                 .map(animal -> animal.getGenes().toString())
                 .collect(Collectors.groupingBy(genotype -> genotype, Collectors.counting()));
         String mostCommonGenotype = genotypeCount.entrySet().stream()
@@ -190,13 +190,13 @@ public class SimulationPresenter implements MapChangeListener {
                 .average()
                 .orElse(0);
 
-        double averageLifespanOfDeadAnimals = simulation.getMap().getAnimals().stream()
+        double averageLifespanOfDeadAnimals = simulation.getMap().getAnimals().keySet().stream()
                 .filter(Animal::isDead)
                 .mapToLong(Animal::getAge)
                 .average()
                 .orElse(-1);
 
-        double averageOffspringOfLivingAnimals = simulation.getMap().getAnimals().stream()
+        double averageOffspringOfLivingAnimals = simulation.getMap().getAnimals().keySet().stream()
                 .filter(animal -> !animal.isDead())
                 .mapToInt(Animal::getOffspring)
                 .average()

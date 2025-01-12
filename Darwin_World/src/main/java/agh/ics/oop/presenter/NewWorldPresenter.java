@@ -73,6 +73,7 @@ public class NewWorldPresenter {
                     simulationPresenter.setWorldMap(new WaterMap(mapWidth, mapHeight, initialPlantCount));
                 }
                 simulationPresenter.setSaving(saveToFile);
+
                 Stage simulationStage = new Stage();
                 simulationStage.setScene(simulationScene);
                 simulationStage.setTitle("Simulation");

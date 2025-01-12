@@ -1,9 +1,6 @@
 package agh.ics.oop.model.util;
 
-public record Parameters(int width,
-                         int height,
-                         int startingPlants,
-                         int plantGrowth,
+public record Parameters(int plantGrowth,
                          int startingAnimals,
                          int startingEnergy,
                          int eatingEnergy,
