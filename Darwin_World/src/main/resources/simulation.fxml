@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Button?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="900" minWidth="1350"
+            minHeight="600" minWidth="900"
             fx:controller="agh.ics.oop.presenter.SimulationPresenter">
     <center>
         <VBox spacing="10" alignment="CENTER">

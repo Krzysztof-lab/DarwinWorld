@@ -22,8 +22,8 @@ public class SimulationPresenter implements MapChangeListener {
     private int mapHeight;
     private int width ;
     private int height;
-    private static final int MAP_MAX_HEIGHT = 800;
-    private static final int MAP_MAX_WIDTH = 800;
+    private static final int MAP_MAX_HEIGHT = 500;
+    private static final int MAP_MAX_WIDTH = 500;
 
     public WorldMap map;
     public void setWorldMap(WorldMap worldMap) {
@@ -87,8 +87,10 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
+
     public void onSimulationStartClicked() throws IncorrectPositionException {
         Simulation simulation = new Simulation(this.map, 20,10);
-        simulation.run();
+        Thread simulationThread = new Thread(simulation::run);
+        simulationThread.start();
     }
 }

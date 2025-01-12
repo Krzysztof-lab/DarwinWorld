@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
 public class Animal implements WorldElement {
 
-    protected int energy = 60;               //modyfikowalne
+    protected int energy = 30;               //modyfikowalne
     protected static final int GENE_LEN = 6;       //modyfikowalne
     protected MapDirection currentDirection;
     protected Vector2d location;
@@ -153,6 +154,13 @@ public class Animal implements WorldElement {
                     newGenes.add(genes.get(i));
                 }
             }
+        }
+
+        // Mutacja
+        int mutatedGenes = (int)Math.round(Math.random()*GENE_LEN);
+        for(int i = 0; i < mutatedGenes; i++){
+            int whichGene = (int)Math.round(Math.random()*(GENE_LEN-1));
+            newGenes.set(whichGene, (int)Math.round(Math.random()*7));
         }
 
         return newGenes;

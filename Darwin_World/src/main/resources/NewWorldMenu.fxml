@@ -8,13 +8,13 @@
 <?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="900" minWidth="1350"
+            minHeight="600" minWidth="900"
             fx:controller="agh.ics.oop.presenter.NewWorldPresenter"
             stylesheets="@styles.css">
 
     <center>
         <StackPane>
-            <ImageView fitHeight="900" fitWidth="1350">
+            <ImageView fitHeight="600" fitWidth="900">
                 <Image url="@MainMenu.png"  />
             </ImageView>
             <VBox spacing="20" alignment="CENTER">
