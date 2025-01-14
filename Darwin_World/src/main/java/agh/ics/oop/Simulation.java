@@ -134,12 +134,12 @@ public class Simulation {
         map.generatePlants(dailyGrowth);
     }
 
-    private void day()  {
+    private synchronized void day()  {
         grabCorpses();
         moving();
         mapChanged("Animals moved");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -147,14 +147,14 @@ public class Simulation {
         breeding();
         mapChanged("Animals were bred");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         growth();
         mapChanged("Plants were grown");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

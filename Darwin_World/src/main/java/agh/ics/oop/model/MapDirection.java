@@ -15,13 +15,13 @@ public enum MapDirection {
     public String toString() {
         return switch(this){
             case NORTH -> "^";
-            case NORTH_EAST -> "‾|";
+            case NORTH_EAST -> "7";
             case EAST -> ">";
             case SOUTH_EAST -> "_|";
             case SOUTH -> "v";
             case SOUTH_WEST -> "|_";
             case WEST -> "<";
-            case NORTH_WEST -> "|‾";
+            case NORTH_WEST -> "F";
         };
 
     }

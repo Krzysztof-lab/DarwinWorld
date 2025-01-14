@@ -2,6 +2,7 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WaterMap;
+import agh.ics.oop.model.util.Parameters;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -9,6 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import java.io.File;
@@ -62,27 +64,36 @@ public class NewWorldPresenter {
                 FXMLLoader simulationLoader = new FXMLLoader(getClass().getResource("/simulation.fxml"));
                 Scene simulationScene = new Scene(simulationLoader.load());
                 SimulationPresenter simulationPresenter = simulationLoader.getController();
-                //simulationPresenter.initializeSimulation(mapWidth, mapHeight, mapVariant,
-                //        initialPlantCount, plantEnergy, dailyPlantGrowth,
-                //        initialAnimalCount, initialAnimalEnergy, reproductionEnergy,
-                //       offspringEnergy, genomeLength, animalBehavior);
-                if(Objects.equals(mapVariant, "Spherical")) {
+                simulationPresenter.setWorldMap(new SphericalMap(mapWidth, mapHeight, initialPlantCount));
+                if(Objects.equals(mapVariant, "Spherical World")) {
                     simulationPresenter.setWorldMap(new SphericalMap(mapWidth, mapHeight, initialPlantCount));
                 }
                 else {
                     simulationPresenter.setWorldMap(new WaterMap(mapWidth, mapHeight, initialPlantCount));
                 }
+
+                simulationPresenter.setSimulation(new Parameters(
+                        dailyPlantGrowth,
+                        initialAnimalCount,
+                        initialAnimalEnergy,
+                        plantEnergy,
+                        reproductionEnergy,
+                        offspringEnergy,
+                        genomeLength));
                 simulationPresenter.setSaving(saveToFile);
+                simulationPresenter.addObserver(simulationPresenter);
 
                 Stage simulationStage = new Stage();
                 simulationStage.setScene(simulationScene);
                 simulationStage.setTitle("Simulation");
-                simulationStage.show();
-                simulationPresenter.drawMap();
+                simulationStage.setResizable(false);
+                simulationStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icon.png"))));
 
                 LoadMainMenu();
+                simulationStage.show();
+                simulationPresenter.drawMap();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error: "+e.getMessage());
             }
         } else {
             showError("All fields must be filled with valid integer values.");
@@ -131,7 +142,7 @@ public class NewWorldPresenter {
 
                 showSuccess("Configuration saved as: " + file.getName());
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error: "+e.getMessage());
                 showError("Error saving configuration: " + e.getMessage());
             }
 
@@ -178,7 +189,7 @@ public class NewWorldPresenter {
         try {
             LoadMainMenu();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
 

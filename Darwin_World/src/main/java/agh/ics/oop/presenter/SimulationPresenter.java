@@ -215,11 +215,11 @@ public class SimulationPresenter implements MapChangeListener {
         if (csvWriter != null && saving) {
             csvWriter.printf(
                     "\"%d\";\"%d\";\"%d\";\"%d\";\"%s\";\"%.2f\";\"%.2f\";\"%.2f\"%n",
-                    simulation.getDay(), // Dzień symulacji
+                    simulation.getDay(),
                     aliveAnimals,
                     totalPlants,
                     freeSpaces,
-                    mostCommonGenotype.replace("\"", "\"\""), // Escape dla cudzysłowów w genotypie
+                    mostCommonGenotype.replace("\"", "\"\""),
                     averageEnergy,
                     averageLifespanOfDeadAnimals,
                     averageOffspringOfLivingAnimals
@@ -231,7 +231,9 @@ public class SimulationPresenter implements MapChangeListener {
     private boolean saving = false;
     public void setSaving(boolean saving) {
         this.saving = saving;
-        initializeCsvFile();
+        if(saving){
+            initializeCsvFile();
+        }
     }
 
     private PrintWriter csvWriter;

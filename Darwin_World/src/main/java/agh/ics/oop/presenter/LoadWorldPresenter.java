@@ -2,7 +2,6 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WaterMap;
-import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.Parameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
@@ -44,8 +43,8 @@ public class LoadWorldPresenter {
             Scene simulationScene = new Scene(simulationLoader.load());
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
-            simulationPresenter.setWorldMap(new SphericalMap(10,10,10));
-            simulationPresenter.setSimulation(new Parameters(5,10,100,10,30, 20,5));
+            simulationPresenter.setWorldMap(new SphericalMap(10,10,20));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -54,12 +53,12 @@ public class LoadWorldPresenter {
             simulationStage.setTitle("Default simulation");
             simulationStage.setResizable(false);
             simulationStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icon.png"))));
-            simulationStage.show();
-            simulationPresenter.drawMap();
 
             LoadMainMenu();
+            simulationStage.show();
+            simulationPresenter.drawMap();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
     @FXML
@@ -68,19 +67,24 @@ public class LoadWorldPresenter {
             // Otwórz nowe okno z symulacją
             FXMLLoader simulationLoader = new FXMLLoader(getClass().getResource("/simulation.fxml"));
             Scene simulationScene = new Scene(simulationLoader.load());
-
             SimulationPresenter simulationPresenter = simulationLoader.getController();
+
+            simulationPresenter.setWorldMap(new WaterMap(10,10,20));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
+            simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
+            simulationPresenter.addObserver(simulationPresenter);
 
             Stage simulationStage = new Stage();
             simulationStage.setScene(simulationScene);
-            simulationStage.setTitle("Simulation");
+            simulationStage.setTitle("Ebb and Flow simulation");
             simulationStage.setResizable(false);
-            simulationStage.show();
+            simulationStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icon.png"))));
 
-            // Przywróć obecne okno do menu głównego
             LoadMainMenu();
+            simulationStage.show();
+            simulationPresenter.drawMap();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
 
@@ -90,19 +94,24 @@ public class LoadWorldPresenter {
             // Otwórz nowe okno z symulacją
             FXMLLoader simulationLoader = new FXMLLoader(getClass().getResource("/simulation.fxml"));
             Scene simulationScene = new Scene(simulationLoader.load());
-
             SimulationPresenter simulationPresenter = simulationLoader.getController();
+
+            simulationPresenter.setWorldMap(new SphericalMap(10,10,20));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
+            simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
+            simulationPresenter.addObserver(simulationPresenter);
 
             Stage simulationStage = new Stage();
             simulationStage.setScene(simulationScene);
-            simulationStage.setTitle("Simulation");
+            simulationStage.setTitle("Once a man, twice a child simulation");
             simulationStage.setResizable(false);
-            simulationStage.show();
+            simulationStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icon.png"))));
 
-            // Przywróć obecne okno do menu głównego
             LoadMainMenu();
+            simulationStage.show();
+            simulationPresenter.drawMap();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
 
@@ -126,25 +135,40 @@ public class LoadWorldPresenter {
             Scene simulationScene = new Scene(simulationLoader.load());
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
-            simulationPresenter.setWorldMap(new SphericalMap(30,30,30));
-            //simulationPresenter.setSimulation(30,10);
+            if(Objects.equals(config.get("mapVariant"), "Spherical World")) {
+                simulationPresenter.setWorldMap(new SphericalMap((Integer) config.get("mapWidth"),(Integer) config.get("mapHeight"),(Integer) config.get("initialPlantCount")   ));
+            }
+            else {
+                simulationPresenter.setWorldMap(new WaterMap((Integer) config.get("mapWidth"),(Integer) config.get("mapHeight"),(Integer) config.get("initialPlantCount")));
+            }
+            simulationPresenter.setSimulation(new Parameters(
+                    (Integer) config.get("dailyPlantGrowth"),
+                    (Integer) config.get("initialAnimalCount"),
+                    (Integer) config.get("initialAnimalEnergy"),
+                    (Integer) config.get("plantEnergy"),
+                    (Integer) config.get("reproductionEnergy"),
+                    (Integer) config.get("offspringEnergy"),
+                    (Integer) config.get("genomeLength")));
+
+            simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
             Stage simulationStage = new Stage();
             simulationStage.setScene(simulationScene);
-            simulationStage.setTitle("Simulation");
+            simulationStage.setTitle("Custom simulation");
             simulationStage.setResizable(false);
-            simulationStage.show();
-            simulationPresenter.drawMap();
+            simulationStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icon.png"))));
 
             LoadMainMenu();
+            simulationStage.show();
+            simulationPresenter.drawMap();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
 
 
-    private Map<String, Object> loadConfiguration(String configurationName) {
+    private Map loadConfiguration(String configurationName) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File("saved_configurations" + File.separator + configurationName + ".json");
@@ -154,7 +178,7 @@ public class LoadWorldPresenter {
                 showError("Configuration file not found: " + file.getAbsolutePath());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
             showError("Error loading configuration: " + e.getMessage());
         }
         return null;
@@ -170,25 +194,12 @@ public class LoadWorldPresenter {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @FXML
     private void onBackToMenuClick() {
         try {
             LoadMainMenu();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
     @FXML
