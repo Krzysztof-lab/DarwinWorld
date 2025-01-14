@@ -7,25 +7,61 @@ import java.util.Map;
 
 public class WaterMap extends AbstractWorldMap {
 
-    private final Boundary bounds;
-    private final Map<Vector2d, Plant> plants = new HashMap<>();
-    public WaterMap(int width, int height,int numberOfPlants) {
-        Vector2d upperRight = new Vector2d(width-1,height-1);
-        Vector2d lowerLeft = new Vector2d(0, 0);
-        this.bounds = new Boundary(lowerLeft, upperRight);
-        //generateWater();
+    private final Map<Vector2d, Water> water = new HashMap<>();
+    private final int time = 2;
+    private final int range = 3;
+
+    public WaterMap(int width, int height, int numberOfPlants) {
+        super(width,height,numberOfPlants);
+        generateWater((width*height)/13);
     }
+
+    private void generateWater(int waterSources){
+        int x,y;
+        for(int i = 0; i < waterSources; i++){
+            do{
+                x = (int) Math.round(Math.random()*bounds.upperRight().getX());
+                y = (int) Math.round(Math.random()*bounds.upperRight().getY());
+            }while(water.containsKey(new Vector2d(x,y)));
+            water.put(new Vector2d(x,y), new Water(new Vector2d(x,y)));
+        }
+    }
+
     @Override
     public boolean canMoveTo(Vector2d position) {
+        if(position.precedes(bounds.upperRight()) && position.follows(bounds.lowerLeft())){
+            for(Water water : water.values()){
+                if(water.isAt(position)){
+                    return false;
+                }
+            }
+            return true;
+        }
         return false;
     }
 
-    public Boundary getBounds() {
-        return bounds;
-    }
-
     @Override
-    public void generatePlants(int numberOfPlants) {
+    public WorldElement objectAt(Vector2d position) {
+        for(Water water : water.values()){
+            if(water.isAt(position)){
+                return water;
+            }
+        }
+        for(Animal entry : animals.keySet()) {
+            if(entry.getPosition().equals(position)) {
+                return entry;
+            }
+        }
+        return plants.get(position);
+    }
+
+    public void ebbAndFlow(int day){
+        if(day%time == 1){
+            for(Water water : water.values()){
+                water.ebbOrFlow(day, range);
+            }
+        }
 
     }
+
 }

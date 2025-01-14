@@ -134,12 +134,12 @@ public class Simulation {
         map.generatePlants(dailyGrowth);
     }
 
-    private void day()  {
+    private synchronized void day()  {
         grabCorpses();
         moving();
         mapChanged("Animals moved");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -147,16 +147,19 @@ public class Simulation {
         breeding();
         mapChanged("Animals were bred");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         growth();
         mapChanged("Plants were grown");
         try {
-            Thread.sleep(100);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+        if(map.getClass() == WaterMap.class){
+            ((WaterMap) map).ebbAndFlow(day);
         }
     }
 
@@ -176,6 +179,9 @@ public class Simulation {
 
             day();
             System.out.println("Day "+day+": ");
+//            for(Animal animal : aliveAnimals){
+//                System.out.println(animal.getPosition() + " " + animal.getEnergy() + " " + animal.getOffspring() + " " + animal.getPlantsEaten());
+//            }
             day++;
             System.out.println(map);
         }
