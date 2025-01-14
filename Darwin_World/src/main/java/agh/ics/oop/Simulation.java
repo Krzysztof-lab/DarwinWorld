@@ -158,8 +158,8 @@ public class Simulation {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if(map.getClass() == WaterMap.class){
-            ((WaterMap) map).ebbAndFlow(day);
+        if(map instanceof WaterMap){
+            ((WaterMap) map).cleanUp(day);
         }
     }
 

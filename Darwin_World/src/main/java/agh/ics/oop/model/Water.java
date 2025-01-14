@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 public class Water implements WorldElement {
 
     private final Vector2d waterSource;
-    private final Boundary waterBounds;
+    private Boundary waterBounds;
 
     public Water(Vector2d waterSource) {
         this.waterSource = waterSource;
@@ -27,27 +27,32 @@ public class Water implements WorldElement {
         return waterBounds;
     }
 
-    public void ebbOrFlow(int day, int range){
-        if((day/(range-1))%2 == 0) //przypływ
+    public void ebbOrFlow(int day, int range, int time){
+        if((day/((range-1)*time))%2==0) //przypływ
         {
+            System.out.println("PRZYPLYW");
             flow();
         }
         else{
+            System.out.println("ODPLYW");
             ebb();
         }
+
     }
 
     private void flow(){
-        if(waterBounds.lowerLeft() != waterSource) {
-            waterBounds.upperRight().add(new Vector2d(1, 1));
-            waterBounds.lowerLeft().add(new Vector2d(-1, -1));
+        Vector2d newUpperRight = waterBounds.upperRight().add(new Vector2d(1, 1));
+        Vector2d newLowerLeft = waterBounds.lowerLeft().add(new Vector2d(-1, -1));
+        if(newUpperRight.follows(newLowerLeft)) {
+            waterBounds = new Boundary(newLowerLeft, newUpperRight);
         }
     }
 
     private void ebb(){
-        if(waterBounds.lowerLeft() != waterSource) {
-            waterBounds.upperRight().add(new Vector2d(-1, -1));
-            waterBounds.lowerLeft().add(new Vector2d(1, 1));
+        Vector2d newUpperRight = waterBounds.upperRight().add(new Vector2d(-1, -1));
+        Vector2d newLowerLeft = waterBounds.lowerLeft().add(new Vector2d(1, 1));
+        if(newUpperRight.follows(newLowerLeft)) {
+            waterBounds = new Boundary(newLowerLeft, newUpperRight);
         }
     }
 

@@ -20,7 +20,7 @@ public class Main {
 //        }
 
         WorldMap map = new WaterMap(5,5,3);
-        Parameters parameters = new Parameters(1,5,20,5,15,10,6);
+        Parameters parameters = new Parameters(1,3,20,5,15,10,6);
         Simulation simulation = new Simulation(map, parameters);
         simulation.run();
 

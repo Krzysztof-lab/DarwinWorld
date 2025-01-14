@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.util.Boundary;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WaterMap extends AbstractWorldMap {
@@ -55,13 +56,32 @@ public class WaterMap extends AbstractWorldMap {
         return plants.get(position);
     }
 
-    public void ebbAndFlow(int day){
-        if(day%time == 1){
+    private void ebbAndFlow(int day){
+        if(day%time == 0){
             for(Water water : water.values()){
-                water.ebbOrFlow(day, range);
+                water.ebbOrFlow(day, range, time);
             }
         }
+    }
 
+    public void cleanUp(int day){
+        ebbAndFlow(day);
+        for(Animal animalx : animals.keySet()){
+            Vector2d space = animalx.getPosition();
+            for(Water water : water.values()){
+                if(water.isAt(space)){
+                    animalx.setEnergy(0);
+                }
+            }
+        }
+        for(Plant plant : List.copyOf(plants.values())){
+            Vector2d space = plant.getPosition();
+            for(Water water : water.values()){
+                if(water.isAt(space)){
+                    plants.remove(space);
+                }
+            }
+        }
     }
 
 }
