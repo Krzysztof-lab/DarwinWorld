@@ -7,6 +7,8 @@ public class Water implements WorldElement {
 
     private final Vector2d waterSource;
     private Boundary waterBounds;
+    private boolean flow = true; // przyplyw lub odplyw
+    private int flowCnt = 1;
 
     public Water(Vector2d waterSource) {
         this.waterSource = waterSource;
@@ -27,15 +29,21 @@ public class Water implements WorldElement {
         return waterBounds;
     }
 
-    public void ebbOrFlow(int day, int range, int time){
-        if((day/((range-1)*time))%2==0) //przypływ
+    public void ebbOrFlow(int range){
+        if(flow)
         {
-            System.out.println("PRZYPLYW");
             flow();
+            flowCnt += 1;
+            if(flowCnt==range){
+                flow = false;
+            }
         }
         else{
-            System.out.println("ODPLYW");
             ebb();
+            flowCnt -= 1;
+            if(flowCnt == 1){
+                flow = true;
+            }
         }
 
     }
@@ -43,17 +51,13 @@ public class Water implements WorldElement {
     private void flow(){
         Vector2d newUpperRight = waterBounds.upperRight().add(new Vector2d(1, 1));
         Vector2d newLowerLeft = waterBounds.lowerLeft().add(new Vector2d(-1, -1));
-        if(newUpperRight.follows(newLowerLeft)) {
-            waterBounds = new Boundary(newLowerLeft, newUpperRight);
-        }
+        waterBounds = new Boundary(newLowerLeft, newUpperRight);
     }
 
     private void ebb(){
         Vector2d newUpperRight = waterBounds.upperRight().add(new Vector2d(-1, -1));
         Vector2d newLowerLeft = waterBounds.lowerLeft().add(new Vector2d(1, 1));
-        if(newUpperRight.follows(newLowerLeft)) {
-            waterBounds = new Boundary(newLowerLeft, newUpperRight);
-        }
+        waterBounds = new Boundary(newLowerLeft, newUpperRight);
     }
 
     @Override

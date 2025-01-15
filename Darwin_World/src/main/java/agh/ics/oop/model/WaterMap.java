@@ -59,18 +59,18 @@ public class WaterMap extends AbstractWorldMap {
     private void ebbAndFlow(int day){
         if(day%time == 0){
             for(Water water : water.values()){
-                water.ebbOrFlow(day, range, time);
+                water.ebbOrFlow(range);
             }
         }
     }
 
     public void cleanUp(int day){
         ebbAndFlow(day);
-        for(Animal animalx : animals.keySet()){
-            Vector2d space = animalx.getPosition();
+        for(Animal animal : animals.keySet()){
+            Vector2d space = animal.getPosition();
             for(Water water : water.values()){
                 if(water.isAt(space)){
-                    animalx.setEnergy(0);
+                    animal.setEnergy(0);
                 }
             }
         }
