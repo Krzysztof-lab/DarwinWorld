@@ -14,7 +14,7 @@ public class WaterMap extends AbstractWorldMap {
 
     public WaterMap(int width, int height, int numberOfPlants) {
         super(width,height,numberOfPlants);
-        generateWater((width*height)/13);
+        generateWater((width*height)/20);
     }
 
     private void generateWater(int waterSources){
