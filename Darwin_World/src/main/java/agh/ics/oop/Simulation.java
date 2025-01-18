@@ -158,6 +158,9 @@ public class Simulation {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        if(map instanceof WaterMap){
+            ((WaterMap) map).cleanUp(day);
+        }
     }
 
     private int day=1;
@@ -176,6 +179,9 @@ public class Simulation {
 
             day();
             System.out.println("Day "+day+": ");
+//            for(Animal animal : aliveAnimals){
+//                System.out.println(animal.getPosition() + " " + animal.getEnergy() + " " + animal.getOffspring() + " " + animal.getPlantsEaten());
+//            }
             day++;
             System.out.println(map);
         }

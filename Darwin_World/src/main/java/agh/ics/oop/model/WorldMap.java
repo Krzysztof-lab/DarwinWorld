@@ -56,7 +56,6 @@ public interface WorldMap extends MoveValidator {
 
     Map<Vector2d, Plant> getPlants();
 
-
     UUID getID();
 
     Boundary getBounds();

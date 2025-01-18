@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Genes;
 import agh.ics.oop.model.util.Parameters;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class AgingAnimal extends Animal {
         energy -= parameters.childEnergy();
         mate.setEnergy(mate.getEnergy()-parameters.childEnergy());
 
-        List<Integer> newGenes = combineGenes(mate);
+        List<Integer> newGenes = Genes.combineGenes(this, mate, parameters.geneLength());
 
         return new AgingAnimal(location, newGenes, parameters);
     }
