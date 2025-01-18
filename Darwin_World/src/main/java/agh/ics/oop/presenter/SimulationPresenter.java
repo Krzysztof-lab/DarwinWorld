@@ -190,17 +190,19 @@ public class SimulationPresenter implements MapChangeListener {
                 .average()
                 .orElse(0);
 
-        double averageLifespanOfDeadAnimals = simulation.getMap().getAnimals().keySet().stream()
+        double averageLifespanOfDeadAnimals = Math.round((simulation.getMap().getAnimals().keySet().stream()
                 .filter(Animal::isDead)
                 .mapToLong(Animal::getAge)
                 .average()
-                .orElse(-1);
+                .orElse(-1)
+        )*100.0)/100.0;
 
-        double averageOffspringOfLivingAnimals = simulation.getMap().getAnimals().keySet().stream()
+        double averageOffspringOfLivingAnimals = Math.round((simulation.getMap().getAnimals().keySet().stream()
                 .filter(animal -> !animal.isDead())
                 .mapToInt(Animal::getOffspring)
                 .average()
-                .orElse(-1);
+                .orElse(-1)
+        )*100.0)/100.0;
 
         //GUI
         animalsCountLabel.setText("Alive animals: " + aliveAnimals);
