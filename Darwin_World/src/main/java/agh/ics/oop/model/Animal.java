@@ -13,20 +13,18 @@ import java.util.Objects;
 public class Animal implements WorldElement {
 
     protected int energy;
-    protected MapDirection currentDirection;
+    protected MapDirection currentDirection = MapDirection.NORTH.change((int)Math.round(Math.random()*7));
     protected Vector2d location;
-    protected List<Integer> genes = new ArrayList<>();
+    protected List<Integer> genes;
     protected int age = 0;
     protected int plantsEaten = 0;
     protected int offspring = 0;
     protected boolean dead = false;
     protected Parameters parameters;
 
-
     // do spawnowania potomstwa
     public Animal(Vector2d location, List<Integer> genes, Parameters parameters) {
         this.location = location;
-        this.currentDirection = MapDirection.NORTH.change((int)Math.round(Math.random()*7));
         this.genes = genes;
         this.energy = 2*parameters.childEnergy();
         this.parameters = parameters;
@@ -36,6 +34,17 @@ public class Animal implements WorldElement {
     public Animal(Vector2d location, Parameters parameters) {
         this(location, Genes.makeGenes(parameters.geneLength()), parameters);
         this.energy = parameters.startingEnergy();
+    }
+
+    //do testów
+    public Animal(Vector2d location, List<Integer> genes){
+        this.location = location;
+        this.genes = genes;
+        this.currentDirection = MapDirection.NORTH;
+    }
+    public Animal(Vector2d location, List<Integer> genes, Parameters parameters, int x){
+        this(location, genes);
+        this.parameters = parameters;
     }
 
 

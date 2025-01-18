@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Boundary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,12 @@ import java.util.Map;
 public class WaterMap extends AbstractWorldMap {
 
     private final Map<Vector2d, Water> water = new HashMap<>();
-    private final int time = 2;
+    private final int time = 3;
     private final int range = 3;
 
     public WaterMap(int width, int height, int numberOfPlants) {
         super(width,height,numberOfPlants);
-        generateWater((width*height)/20);
+        generateWater((width*height)/30);
     }
 
     private void generateWater(int waterSources){
@@ -84,4 +85,11 @@ public class WaterMap extends AbstractWorldMap {
         }
     }
 
+    public List<Vector2d> getWaterSources() {
+        List<Vector2d> sources = new ArrayList<>();
+        for(Water water : water.values()){
+            sources.add(water.getPosition());
+        }
+        return sources;
+    }
 }

@@ -20,6 +20,10 @@ public class Simulation {
         this.map = map;
         this.dailyGrowth = parameters.plantGrowth();
         this.parameters = parameters;
+        generateAnimals();
+    }
+
+    private void generateAnimals() throws IncorrectPositionException {
         Random random = new Random();
         int x, y;
         Animal newborn;
@@ -27,7 +31,7 @@ public class Simulation {
             do {
                 x = random.nextInt(map.getBounds().upperRight().getX() + 1);
                 y = random.nextInt(map.getBounds().upperRight().getY() + 1);
-                newborn = new Animal(new Vector2d(x, y), parameters);
+                newborn = AnimalFactory.createAnimal(parameters.animalType(), new Vector2d(x,y),parameters);
             } while (!map.place(newborn));
             aliveAnimals.add(newborn);
         }
@@ -160,6 +164,11 @@ public class Simulation {
         }
         if(map instanceof WaterMap){
             ((WaterMap) map).cleanUp(day);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

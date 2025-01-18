@@ -10,8 +10,8 @@ import static java.lang.Math.min;
 public class AgingAnimal extends Animal {
 
     // Starość nie radość
-    private static final float AGING_START = 30f;  // oba inty modyfikowalne
-    private static final float OLD_AGE = 70f;
+    private static final float AGING_START = 30f;
+    private static final float OLD_AGE = 60f;
     private static final float SKIP_TURN = 80/((OLD_AGE-AGING_START)*100);
 
     public AgingAnimal(Vector2d location, Parameters parameters) {

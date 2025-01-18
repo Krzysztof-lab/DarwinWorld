@@ -79,7 +79,8 @@ public class NewWorldPresenter {
                         plantEnergy,
                         reproductionEnergy,
                         offspringEnergy,
-                        genomeLength));
+                        genomeLength,
+                        animalBehavior));
                 simulationPresenter.setSaving(saveToFile);
                 simulationPresenter.addObserver(simulationPresenter);
 

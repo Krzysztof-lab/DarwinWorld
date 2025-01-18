@@ -19,10 +19,21 @@ public class Main {
 //            System.out.println(e.getMessage());
 //        }
 
-        WorldMap map = new WaterMap(5,5,3);
-        Parameters parameters = new Parameters(1,3,20,5,15,10,6);
-        Simulation simulation = new Simulation(map, parameters);
-        simulation.run();
+//        WorldMap map = new WaterMap(5,5,3);
+//        Parameters parameters = new Parameters(1,3,20,5,15,10,6);
+//        Simulation simulation = new Simulation(map, parameters);
+//        simulation.run();
+
+        //given
+        Animal animal1 = new Animal(new Vector2d(0,0), List.of(0,0,0,0,0,0));
+        Animal animal2 = new Animal(new Vector2d(0,0), List.of(1,1,1,1,1,1));
+
+        System.out.println(animal1.getEnergy());
+        //when
+        Animal child = animal1.breed(animal2);
+
+        System.out.println(child.getGenes());
+        System.out.println(animal1.getEnergy());
 
 
         System.out.println("End");

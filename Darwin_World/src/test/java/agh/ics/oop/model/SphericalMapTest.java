@@ -3,6 +3,8 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SphericalMapTest {
@@ -10,7 +12,7 @@ class SphericalMapTest {
     void ifMapWorks() {
         //given
         WorldMap map = new SphericalMap(5,5,10);
-        Animal animal = new Animal(new Vector2d(2,2));
+        Animal animal = new Animal(new Vector2d(2,2), List.of(0));
 
         //when
         try {

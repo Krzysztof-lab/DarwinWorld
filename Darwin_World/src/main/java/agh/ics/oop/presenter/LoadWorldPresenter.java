@@ -44,7 +44,7 @@ public class LoadWorldPresenter {
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
             simulationPresenter.setWorldMap(new SphericalMap(10,10,20));
-            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5, "Randomness"));
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -70,7 +70,7 @@ public class LoadWorldPresenter {
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
             simulationPresenter.setWorldMap(new WaterMap(10,10,20));
-            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5, "Randomness"));
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -97,7 +97,7 @@ public class LoadWorldPresenter {
             SimulationPresenter simulationPresenter = simulationLoader.getController();
 
             simulationPresenter.setWorldMap(new SphericalMap(10,10,20));
-            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5));
+            simulationPresenter.setSimulation(new Parameters(10,15,50,5,30, 20,5, "Once a man, twice a child"));
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -148,7 +148,8 @@ public class LoadWorldPresenter {
                     (Integer) config.get("plantEnergy"),
                     (Integer) config.get("reproductionEnergy"),
                     (Integer) config.get("offspringEnergy"),
-                    (Integer) config.get("genomeLength")));
+                    (Integer) config.get("genomeLength"),
+                    (String) config.get("animalBehaviour")));
 
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);

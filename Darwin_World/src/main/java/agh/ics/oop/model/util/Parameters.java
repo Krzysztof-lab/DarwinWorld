@@ -6,5 +6,6 @@ public record Parameters(int plantGrowth,
                          int eatingEnergy,
                          int breedingEnergy,
                          int childEnergy,
-                         int geneLength) {
+                         int geneLength,
+                         String animalType) {
 }

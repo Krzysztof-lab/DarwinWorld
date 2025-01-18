@@ -8,8 +8,8 @@ public class AnimalFactory {
 
     public static Animal createAnimal(String animalType, Vector2d location, Parameters parameters) {
         return switch (animalType) {
-            case "Normal" -> new Animal(location,parameters);
-            case "Aging" -> new AgingAnimal(location,parameters);
+            case "Randomness" -> new Animal(location,parameters);
+            case "Once a man, twice a child" -> new AgingAnimal(location,parameters);
             default -> throw new IllegalStateException("Unexpected value: " + animalType);
         };
     }
