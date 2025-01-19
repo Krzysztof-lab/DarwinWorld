@@ -98,6 +98,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         int middleEnd = (int) Math.ceil(height * 0.6);
         int x, y;
         int maxPlantsInEquator = (middleEnd - middleStart+1)*(width+1);
+        int plantsInEquator = countPlantsInEquator();
         for (int i = 0; i < numberOfPlants; i++) {
             if(plants.size()==(height+1)*(width+1)) {
                 return;
@@ -106,8 +107,9 @@ public abstract class AbstractWorldMap implements WorldMap {
             boolean switchPlace = randomValue >= 0.2;
             do {
                 x = random.nextInt(width + 1);
-                if (switchPlace && plantsInEquator()<maxPlantsInEquator) {
+                if (switchPlace && plantsInEquator<maxPlantsInEquator) {
                     y = random.nextInt(middleEnd - middleStart + 1) + middleStart;
+                    plantsInEquator++;
                 } else {
                     if (random.nextBoolean()) {
                         // Zakres od 0 do middleStart
@@ -123,7 +125,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
     }
 
-    private int plantsInEquator() {
+    private int countPlantsInEquator() {
         int height = getBounds().upperRight().getY();
         int width = getBounds().upperRight().getX();
         int middleStart = (int) Math.floor(height * 0.4);

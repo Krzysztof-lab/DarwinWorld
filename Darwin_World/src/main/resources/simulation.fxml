@@ -13,12 +13,12 @@
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           minHeight="600" minWidth="900"
+           minHeight="600" minWidth="1100"
            fx:controller="agh.ics.oop.presenter.SimulationPresenter"
            stylesheets="@stylesSimulation.css">
 
     <!-- Globalne tło -->
-    <ImageView fitHeight="600" fitWidth="900">
+    <ImageView fitHeight="600" fitWidth="1100">
         <Image url="@backgroundSimulation.png" />
     </ImageView>
 
@@ -30,6 +30,10 @@
                 <HBox spacing="10" alignment="CENTER">
                     <Button fx:id="startButton" text="START" onAction="#onSimulationStartClicked" styleClass="button"/>
                     <Button fx:id="pauseButton" text="PAUSE" onAction="#onPauseButtonClicked" styleClass="button"/>
+                    <Button fx:id="highlightGenotypeButton" text="Dominant Genotype" onAction="#onHighlightButtonClicked" visible="false"/>
+                    <Button fx:id="highlightPlantsButton" text="Equator" onAction="#onHighlightPlantsButtonClicked" visible="false"/>
+
+
                 </HBox>
             </VBox>
         </center>
@@ -38,10 +42,19 @@
                 <Label fx:id="animalsCountLabel" text="Alive animals:" />
                 <Label fx:id="plantsCountLabel" text="Total Plants:" />
                 <Label fx:id="freeSpacesCountLabel" text="Free Spaces:" />
-                <Label fx:id="mostCommonGenotypeLabel" text="Most Common Genotype:           " />
+                <Label fx:id="mostCommonGenotypeLabel" text="Most Common Genotype:                              " />
                 <Label fx:id="avgEnergyLabel" text="Average Energy:" />
                 <Label fx:id="avgLifespanLabel" text="Average Lifespan (dead):" />
                 <Label fx:id="avgOffspringLabel" text="Average Offspring:" />
+                <Label/>
+                <Label>Selected animal statistics:</Label>
+                <Label fx:id="genotypeLabel" text="Genotype: " />
+                <Label fx:id="activeGenePartLabel" text="Active Gene Part: " />
+                <Label fx:id="energyLabel" text="Energy: " />
+                <Label fx:id="plantsEatenLabel" text="Plants Eaten: " />
+                <Label fx:id="childrenCountLabel" text="Children: " />
+                <Label fx:id="ageLabel" text="Age: " />
+                <Label fx:id="deathDayLabel" text="Death Day: " />
             </VBox>
         </left>
     </BorderPane>

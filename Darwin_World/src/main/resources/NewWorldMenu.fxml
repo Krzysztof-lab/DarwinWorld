@@ -108,7 +108,7 @@
                 <Button text="Start Simulation" onAction="#onStartClick" styleClass="button"/>
 
                 <!-- Przycisk Powrót -->
-                <Button text="Back to Menu" onAction="#onBackToMenuClick" styleClass="button"/>
+                <Button fx:id="backButton" text="Back to Menu" onAction="#onBackToMenuClick" styleClass="button"/>
             </VBox>
         </StackPane>
     </center>

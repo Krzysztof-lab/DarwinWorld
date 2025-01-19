@@ -16,25 +16,25 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SimulationPresenter implements MapChangeListener {
-    private final int xMin = 0;
-    private final int yMin = 0;
+
+    private static final int MAP_MAX_HEIGHT = 450;
+    private static final int MAP_MAX_WIDTH = 450;
     private int xMax;
     private int yMax;
-    private int mapWidth;
-    private int mapHeight;
     private int width ;
     private int height;
-    private static final int MAP_MAX_HEIGHT = 500;
-    private static final int MAP_MAX_WIDTH = 500;
+
+    private int freeSpaces; //Zmienna potrzebna do statystyk śledzenia ilości wolnych pól
+    private Animal selectedAnimal = null;  // Zmienna potrzebna do funkcyjności śledzenia zwierzaka
 
     private WorldMap map;
     private Simulation simulation;
@@ -42,10 +42,8 @@ public class SimulationPresenter implements MapChangeListener {
         this.map = worldMap;
         yMax = map.getBounds().upperRight().getY();
         xMax = map.getBounds().upperRight().getX();
-        mapWidth = xMax - xMin + 1;
-        mapHeight = yMax - yMin + 1;
-        width = Math.round( (float) MAP_MAX_WIDTH /mapWidth);
-        height = Math.round( (float) MAP_MAX_HEIGHT /mapHeight);
+        width = Math.round((float) MAP_MAX_WIDTH / xMax + 1);
+        height = Math.round((float) MAP_MAX_HEIGHT / yMax + 1);
     }
 
     public void setSimulation(Parameters parameters) throws IncorrectPositionException {
@@ -54,7 +52,17 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void addObserver(MapChangeListener observer) {
         this.simulation.addObserver(observer);
+        this.simulation.addObserver(new ConsoleMapDisplay());
     }
+
+    @Override
+    public void mapChanged(WorldMap worldMap, String message) {
+        Platform.runLater(() -> {
+            drawMap(false,false);
+            updateStatistics();
+        });
+    }
+
     @FXML
     private GridPane mapGrid;
 
@@ -63,29 +71,38 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }
-    public void addElements(){
+
+    public void addElements() {
         freeSpaces = 0;
-        for (int i = xMin; i <= xMax; i++) {
-            for (int j = yMax; j >= yMin; j--) {
+        for (int i = 0; i <= xMax; i++) {
+            for (int j = yMax; j >= 0; j--) {
                 if (map.isOccupied(new Vector2d(i, j))) {
+                    int finalI1 = i;
+                    int finalJ1 = j;
                     switch (map.objectAt(new Vector2d(i, j))) {
                         case Animal animal -> {
                             StackPane cellContent = new StackPane();
-                            // Dodaj obrazek zwierzęcia
                             ImageView animalImage = toImageView("/monkeyW.png", width, height);
                             cellContent.getChildren().add(animalImage);
-                            // Dodaj pasek energii na dole
                             ImageView energyBar = getEnergyBar(animal.getEnergy());
-                            StackPane.setAlignment(energyBar, Pos.BOTTOM_CENTER);  // Ustaw pasek energii na dole
+                            StackPane.setAlignment(energyBar, Pos.BOTTOM_CENTER);
                             cellContent.getChildren().add(energyBar);
-                            mapGrid.add(cellContent, i - xMin + 1, yMax - j + 1);
+
+                            //Funkcyjność śledzenia zwierzaka - .setOnMouseClicked
+                            cellContent.setOnMouseClicked(_ -> {
+                                if (map.objectAt(new Vector2d(finalI1, finalJ1)) instanceof Animal clickedAnimal) {
+                                    selectedAnimal = clickedAnimal;
+                                    drawMap(false,false);
+                                }
+                            });
+
+                            mapGrid.add(cellContent, i + 1, yMax - j + 1);
                         }
-                        case Water water -> mapGrid.add(toImageView("/water.png", width, height), i - xMin + 1, yMax - j + 1);
-                        case Plant plant -> mapGrid.add(toImageView("/grass.png", width, height), i - xMin + 1, yMax - j + 1);
+                        case Water water -> mapGrid.add(toImageView("/water.png", width, height), i + 1, yMax - j + 1);
+                        case Plant plant -> mapGrid.add(toImageView("/grass.png", width, height), i + 1, yMax - j + 1);
                         default -> throw new IllegalStateException("Unexpected value: " + map.objectAt(new Vector2d(i, j)));
                     }
                 } else {
-                    mapGrid.add(new Label(" "), i - xMin + 1, yMax - j + 1);
                     freeSpaces++;
                 }
                 GridPane.setHalignment(mapGrid.getChildren().getLast(), HPos.CENTER);
@@ -93,8 +110,8 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
-    public ImageView toImageView(String imagePath,int width, int height) {
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));  // Załaduj obrazek z zasobów
+    public ImageView toImageView(String imagePath, int width, int height) {
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -111,66 +128,59 @@ public class SimulationPresenter implements MapChangeListener {
             imagePath = "/energy_empty.png";
         }
 
-        return toImageView(imagePath, width, height/5);
+        return toImageView(imagePath, width, height / 5);
     }
 
-    public void drawMap() {
+    public void drawMap(boolean drawEquator, boolean drawCommonGene) {
         clearGrid();
         mapGrid.getColumnConstraints().add(new ColumnConstraints(20));
         mapGrid.getRowConstraints().add(new RowConstraints(20));
-        for(int i=0; i<mapHeight; i++){
-            Label label = new Label(Integer.toString(yMax-i));
+        for (int i = 0; i <= yMax; i++) {
+            Label label = new Label(Integer.toString(yMax - i));
             GridPane.setHalignment(label, HPos.CENTER);
             mapGrid.getRowConstraints().add(new RowConstraints(height));
-            mapGrid.add(label, 0, i+1);
+            mapGrid.add(label, 0, i + 1);
         }
-        for(int i=0; i<mapWidth; i++){
-            Label label = new Label(Integer.toString(i+xMin));
+        for (int i = 0; i <= xMax; i++) {
+            Label label = new Label(Integer.toString(i));
             GridPane.setHalignment(label, HPos.CENTER);
             mapGrid.getColumnConstraints().add(new ColumnConstraints(width));
-            mapGrid.add(label, i+1, 0);
+            mapGrid.add(label, i + 1, 0);
         }
+        if (drawEquator) {
+            highlightEquatorZone();
+        }
+
+        if (drawCommonGene) {
+            drawMapWithCommonGeneHighlight();
+        }
+
         addElements();
-    }
 
-    @FXML
-    private Label outLabel;
-    @Override
-    public void mapChanged(WorldMap worldMap, String message) {
-        Platform.runLater(()->{
-            drawMap();
-            updateStatistics();
-        });
-    }
-
-
-    public void onSimulationStartClicked() {
-        Thread simulationThread = new Thread(simulation::run);
-        simulationThread.start();
-    }
-    @FXML
-    private Button pauseButton;
-    @FXML
-    public void onPauseButtonClicked() {
-        if (pauseButton.getText().equals("PAUSE")) {
-            simulation.pause();
-            pauseButton.setText("RESUME");
-        }
-        else {
-            simulation.resume();
-            pauseButton.setText("PAUSE");
+        // Funkycjność śledzenia zwierzaka
+        if (selectedAnimal != null) {
+            Vector2d position = selectedAnimal.getPosition();
+            StackPane selectedCell = (StackPane) mapGrid.getChildren().stream()
+                    .filter(node -> GridPane.getColumnIndex(node) != null &&
+                            GridPane.getRowIndex(node) != null &&
+                            GridPane.getColumnIndex(node) == position.getX() + 1 &&
+                            GridPane.getRowIndex(node) == yMax - position.getY() + 1)
+                    .findFirst()
+                    .orElse(null);
+            if (selectedCell != null) {
+                selectedCell.setStyle("-fx-border-color: #f11010; -fx-border-width: 3px;");
+            }
+            updateSelectedAnimalStats();
         }
     }
 
-    @FXML    private Label animalsCountLabel;
-    @FXML    private Label plantsCountLabel;
-    @FXML    private Label freeSpacesCountLabel;
-    @FXML    private Label mostCommonGenotypeLabel;
-    @FXML    private Label avgEnergyLabel;
-    @FXML    private Label avgLifespanLabel;
-    @FXML    private Label avgOffspringLabel;
-
-    private int freeSpaces;
+    @FXML private Label animalsCountLabel;
+    @FXML private Label plantsCountLabel;
+    @FXML private Label freeSpacesCountLabel;
+    @FXML private Label mostCommonGenotypeLabel;
+    @FXML private Label avgEnergyLabel;
+    @FXML private Label avgLifespanLabel;
+    @FXML private Label avgOffspringLabel;
 
     public void updateStatistics() {
         int aliveAnimals = simulation.getAliveAnimals().size();
@@ -195,14 +205,14 @@ public class SimulationPresenter implements MapChangeListener {
                 .mapToLong(Animal::getAge)
                 .average()
                 .orElse(-1)
-        )*100.0)/100.0;
+        ) * 100.0) / 100.0;
 
         double averageOffspringOfLivingAnimals = Math.round((simulation.getMap().getAnimals().keySet().stream()
                 .filter(animal -> !animal.isDead())
                 .mapToInt(Animal::getOffspring)
                 .average()
                 .orElse(-1)
-        )*100.0)/100.0;
+        ) * 100.0) / 100.0;
 
         //GUI
         animalsCountLabel.setText("Alive animals: " + aliveAnimals);
@@ -230,24 +240,144 @@ public class SimulationPresenter implements MapChangeListener {
         }
 
     }
+
+    @FXML private Label genotypeLabel;
+    @FXML private Label activeGenePartLabel;
+    @FXML private Label energyLabel;
+    @FXML private Label plantsEatenLabel;
+    @FXML private Label childrenCountLabel;
+    @FXML private Label ageLabel;
+    @FXML private Label deathDayLabel;
+    public void updateSelectedAnimalStats() {
+        if (selectedAnimal != null) {
+            genotypeLabel.setText("Genotype: " + selectedAnimal.getGenes());
+            activeGenePartLabel.setText("Active Gene Part: " + selectedAnimal.getActiveGene());
+            energyLabel.setText("Energy: " + selectedAnimal.getEnergy());
+            plantsEatenLabel.setText("Plants Eaten: " + selectedAnimal.getPlantsEaten());
+            childrenCountLabel.setText("Children: " + selectedAnimal.getOffspring());
+            ageLabel.setText("Age: " + selectedAnimal.getAge());
+            deathDayLabel.setText("Death Day: " + (selectedAnimal.isDead() ? selectedAnimal.getAge() : "Still Alive"));
+        }
+    }
+
     private boolean saving = false;
+
     public void setSaving(boolean saving) {
         this.saving = saving;
-        if(saving){
+        if (saving) {
             initializeCsvFile();
         }
     }
 
     private PrintWriter csvWriter;
+
     private void initializeCsvFile() {
         try {
-            csvWriter = new PrintWriter(new FileWriter("statistics/simulation_statistics"+simulation.getMap().getID()+".csv", true));
+            csvWriter = new PrintWriter(new FileWriter("statistics/simulation_statistics" + simulation.getMap().getID() + ".csv", true));
             // Nagłówki
             csvWriter.println("Day;Alive Animals;Total Plants;Free Spaces;Most Common Genotype;Average Energy;Average Lifespan;Average Offspring");
             csvWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
+    }
 
+    public void onSimulationStartClicked() {
+        Thread simulationThread = new Thread(simulation::run);
+        simulationThread.start();
+    }
+
+    @FXML private Button pauseButton;
+    @FXML private Button highlightGenotypeButton;
+    @FXML private Button highlightPlantsButton;
+    @FXML
+    public void onPauseButtonClicked() {
+        if (pauseButton.getText().equals("PAUSE")) {
+            simulation.pause();
+            pauseButton.setText("RESUME");
+            highlightGenotypeButton.setVisible(true);//Najpopularniejszy genotyp
+            highlightPlantsButton.setVisible(true);//Preferowane pola przez rośliny
+            //Funkcyjność śledzenia zwierzaka
+            if (selectedAnimal != null) {
+                drawMap(false,false);
+            }
+        } else {
+            simulation.resume();
+            pauseButton.setText("PAUSE");
+            highlightGenotypeButton.setVisible(false);//Najpopularniejszy genotyp
+            highlightPlantsButton.setVisible(false);//Preferowane pola przez rośliny
+        }
+    }
+
+    //Najpopularniejszy genotyp
+    @FXML
+    public void onHighlightButtonClicked() {
+            drawMap(false,true);
+    }
+
+    private void drawMapWithCommonGeneHighlight() {
+        List<Animal> animalsWithDominantGenotype = getAnimalsWithDominantGenotype();
+
+        for (int i = 0; i <= xMax; i++) {
+            for (int j = yMax; j >= 0; j--) {
+                if (map.isOccupied(new Vector2d(i, j))) {
+                    switch (map.objectAt(new Vector2d(i, j))) {
+                        case Animal animal -> {
+                            StackPane cellContent = new StackPane();
+                            ImageView animalImage = toImageView("/monkeyW.png", width, height);
+                            if (animalsWithDominantGenotype.contains(animal)) {
+                                animalImage.setStyle("-fx-effect: dropshadow(gaussian, rgb(241,16,16), 5, 1, 0, 0);");
+                            }
+                            cellContent.getChildren().add(animalImage);
+                            ImageView energyBar = getEnergyBar(animal.getEnergy());
+                            StackPane.setAlignment(energyBar, Pos.BOTTOM_CENTER);
+                            cellContent.getChildren().add(energyBar);
+                            mapGrid.add(cellContent, i + 1, yMax - j + 1);
+                        }
+                        case Water water -> mapGrid.add(toImageView("/water.png", width, height), i + 1, yMax - j + 1);
+                        case Plant plant -> mapGrid.add(toImageView("/grass.png", width, height), i + 1, yMax - j + 1);
+                        default -> throw new IllegalStateException("Unexpected value: " + map.objectAt(new Vector2d(i, j)));
+                    }
+                }
+            }
+        }
+    }
+
+    private List<Animal> getAnimalsWithDominantGenotype() {
+        Map<String, Long> genotypeCount = simulation.getMap().getAnimals().keySet().stream()
+                .map(animal -> animal.getGenes().toString())
+                .collect(Collectors.groupingBy(genotype -> genotype, Collectors.counting()));
+
+        String mostCommonGenotype = genotypeCount.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("No Genotype");
+
+        return simulation.getMap().getAnimals().keySet().stream()
+                .filter(animal -> animal.getGenes().toString().equals(mostCommonGenotype))
+                .collect(Collectors.toList());
+    }
+
+
+    //Pokazanie preferowanych pól przez rośliny
+    @FXML
+    public void onHighlightPlantsButtonClicked() {
+        drawMap(true,false);
+    }
+
+    private void highlightEquatorZone() {
+        int height = map.getBounds().upperRight().getY();
+        int width = map.getBounds().upperRight().getX();
+        int middleStart = (int) Math.floor(height * 0.4);
+        int middleEnd = (int) Math.ceil(height * 0.6);
+
+        // Wyróżnienie wszystkich pól w strefie równikowej
+        for (int i = 0; i <= width; i++) {
+            for (int j = middleStart; j <= middleEnd; j++) {
+                StackPane equatorCell = new StackPane();
+                equatorCell.setStyle("-fx-background-color: rgba(0, 128, 0, 0.2);");
+                mapGrid.add(equatorCell, i + 1, yMax - j + 1);
+            }
+        }
     }
 }

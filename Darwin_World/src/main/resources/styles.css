@@ -1,4 +1,3 @@
-/* Stylizacja przycisków */
 .button {
     -fx-background-color: #7e3ed5;
     -fx-text-fill: #e6b26b;
@@ -24,7 +23,6 @@
     -fx-border-color: #3700b3;
 }
 
-/* Stylizacja pól tekstowych */
 .text-field {
     -fx-font-family: 'Pixelify Sans', monospace;
     -fx-font-size: 16px;
@@ -41,72 +39,63 @@
     -fx-border-color: #9b4ee0;
 }
 
-/* Stylizacja etykiet */
 .label {
     -fx-font-family: 'Pixelify Sans', monospace;
     -fx-font-size: 16px;
-    -fx-text-fill: #e6b26b;  /* Kolor tekstu */
-    -fx-background-color: rgba(0, 0, 0, 0.5);  /* Półprzezroczyste tło dla etykiety */
-    -fx-background-radius: 5px;  /* Zaokrąglenie krawędzi tła */
-    -fx-padding: 5px;  /* Dodanie paddingu wewnątrz etykiety */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 3, 0.5, 0, 1);  /* Dodanie cienia */
+    -fx-text-fill: #e6b26b;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 3, 0.5, 0, 1);
 }
 
-/* Stylizacja ComboBox */
 .combo-box {
     -fx-font-family: 'Pixelify Sans', monospace;
     -fx-font-size: 16px;
-    -fx-text-fill: #e6b26b; /* Żółty tekst */
-    -fx-background-color: #1f1f1f; /* Czarny tło */
-    -fx-border-color: #7e3ed5; /* Fioletowy border */
+    -fx-text-fill: #e6b26b;
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #7e3ed5;
     -fx-border-width: 2px;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
 }
 
-/* Hover efekty dla ComboBox */
 .combo-box:hover {
-    -fx-border-color: #9b4ee0; /* Jaśniejszy fiolet */
+    -fx-border-color: #9b4ee0;
 }
 
-/* Styl dla wybranego elementu */
 .combo-box:focused {
     -fx-border-color: #9b4ee0;
-    -fx-background-color: #1f1f1f; /* Utrzymanie czarnego tła po kliknięciu */
-    -fx-text-fill: #e6b26b; /* Tekst pozostaje żółty */
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: #e6b26b;
 }
 
-/* Tło rozwijanej listy ComboBox */
 .combo-box .list-cell {
-    -fx-background-color: #1f1f1f; /* Czarny tło dla elementów w liście */
-    -fx-text-fill: #e6b26b; /* Żółty tekst */
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: #e6b26b;
 }
 
-/* Hover dla elementów w rozwijanej liście */
 .combo-box .list-cell:hover {
-    -fx-background-color: #6218ca; /* Fioletowe tło podczas hover */
-    -fx-text-fill: #e6b26b; /* Tekst pozostaje żółty */
+    -fx-background-color: #6218ca;
+    -fx-text-fill: #e6b26b;
 }
 
-/* Styl dla wybranego elementu w liście */
 .combo-box .list-cell:selected {
-    -fx-background-color: #1f1f1f; /* Pozostaje czarne tło */
-    -fx-text-fill: #e6b26b; /* Tekst pozostaje żółty */
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: #e6b26b;
 }
 
-/* Tło całej rozwijanej listy */
 .combo-box .dropdown {
-    -fx-background-color: #1f1f1f; /* Tło całej rozwijanej listy */
-    -fx-border-color: #7e3ed5; /* Fioletowy border */
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #7e3ed5;
 }
 
-/* Stylizacja CheckBox */
 .check-box {
     -fx-font-family: 'Pixelify Sans', monospace;
     -fx-font-size: 16px;
-    -fx-text-fill: #e6b26b; /* Żółty tekst */
-    -fx-background-color: rgba(0, 0, 0, 0.5); /* Półprzezroczyste tło za tekstem */
-    -fx-border-color: #7e3ed5; /* Fioletowy border */
+    -fx-text-fill: #e6b26b;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-border-color: #7e3ed5;
     -fx-border-width: 2px;
     -fx-padding: 5px 10px;
     -fx-background-radius: 10px;
@@ -114,20 +103,17 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 3, 0.5, 0, 1);
 }
 
-/* Hover efekty dla CheckBox */
 .check-box:hover {
-    -fx-border-color: #9b4ee0; /* Jaśniejszy fiolet */
+    -fx-border-color: #9b4ee0;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 5, 0.5, 0, 2);
 }
 
-/* Styl dla zaznaczonego CheckBox */
 .check-box:selected {
-    -fx-background-color: #6218ca; /* Fioletowe tło */
-    -fx-border-color: #9b4ee0; /* Jaśniejszy fiolet */
-    -fx-text-fill: #e6b26b; /* Żółty tekst */
+    -fx-background-color: #6218ca;
+    -fx-border-color: #9b4ee0;
+    -fx-text-fill: #e6b26b;
 }
 
-/* Styl dla CheckBox w trybie "focused" */
 .check-box:focused {
     -fx-border-color: #9b4ee0;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 6, 0.5, 0, 3);

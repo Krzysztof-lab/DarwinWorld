@@ -14,13 +14,25 @@ public class Simulation {
     private final int dailyGrowth;
     private final Parameters parameters;
     private final List<MapChangeListener> observers = new ArrayList<>();
+    private int day=1;
 
-
+    //Constuctor
     public Simulation(WorldMap map, Parameters parameters) throws IncorrectPositionException {
         this.map = map;
         this.dailyGrowth = parameters.plantGrowth();
         this.parameters = parameters;
         generateAnimals();
+    }
+
+    //Getters
+    public LinkedList<Animal> getAliveAnimals() {
+        return aliveAnimals;
+    }
+    public WorldMap getMap() {
+        return map;
+    }
+    public int getDay() {
+        return day;
     }
 
     private void generateAnimals() throws IncorrectPositionException {
@@ -35,16 +47,6 @@ public class Simulation {
             } while (!map.place(newborn));
             aliveAnimals.add(newborn);
         }
-    }
-
-    public LinkedList<Animal> getAliveAnimals() {
-        return aliveAnimals;
-    }
-    public WorldMap getMap() {
-        return map;
-    }
-    public int getDay() {
-        return day;
     }
 
     private void grabCorpses() {
@@ -140,23 +142,28 @@ public class Simulation {
 
     private synchronized void day()  {
         grabCorpses();
+        checkPause();
         moving();
-        mapChanged("Animals moved");
+        checkPause();
+        mapChanged("Day: "+day+", Animals have moved to new positions.");
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         consumption();
+        checkPause();
         breeding();
-        mapChanged("Animals were bred");
+        checkPause();
+        mapChanged("Day: "+day+", Animals have consumed plants, bred and new offspring appeared.");
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         growth();
-        mapChanged("Plants were grown");
+        checkPause();
+        mapChanged("Day: "+day+", Plants have grown.");
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
@@ -164,6 +171,7 @@ public class Simulation {
         }
         if(map instanceof WaterMap){
             ((WaterMap) map).cleanUp(day);
+            checkPause();
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -171,28 +179,11 @@ public class Simulation {
             }
         }
     }
-
-    private int day=1;
     public void run() {
         while(!aliveAnimals.isEmpty())
         {
-            if (paused) {
-                synchronized (this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                }
-            }
-
             day();
-            System.out.println("Day "+day+": ");
-//            for(Animal animal : aliveAnimals){
-//                System.out.println(animal.getPosition() + " " + animal.getEnergy() + " " + animal.getOffspring() + " " + animal.getPlantsEaten());
-//            }
             day++;
-            System.out.println(map);
         }
     }
     private boolean paused = false;
@@ -204,6 +195,18 @@ public class Simulation {
         paused = false;
         synchronized (this) {
             notify();
+        }
+    }
+
+    private void checkPause() {
+        if (paused) {
+            synchronized (this) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
     }
 

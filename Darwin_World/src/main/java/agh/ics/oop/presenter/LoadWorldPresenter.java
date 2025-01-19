@@ -3,6 +3,7 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WaterMap;
 import agh.ics.oop.model.util.Parameters;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,21 +11,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
-public class LoadWorldPresenter {
-
-    @FXML private ComboBox<String> configurationComboBox;  // Dodaj ComboBox
-    @FXML private Button loadButton;
+public class LoadWorldPresenter extends AbstractPresenter {
+    @FXML private ComboBox<String> configurationComboBox;
     @FXML private CheckBox saveToFileCheckBox;
 
+    //Metoda inicjalizująca scene, wsadza wszystkie konfiguracje do Comboboxa
     @FXML
     private void initialize() {
         File folder = new File("saved_configurations");
-        File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
+        File[] files = folder.listFiles((_, name) -> name.endsWith(".json"));
 
         List<String> configurationNames = new ArrayList<>();
         if (files != null) {
@@ -56,11 +54,12 @@ public class LoadWorldPresenter {
 
             LoadMainMenu();
             simulationStage.show();
-            simulationPresenter.drawMap();
+            simulationPresenter.drawMap(false,false);
         } catch (Exception e) {
             System.out.println("Error: "+e.getMessage());
         }
     }
+
     @FXML
     private void onStartClickWater() {
         try {
@@ -82,7 +81,7 @@ public class LoadWorldPresenter {
 
             LoadMainMenu();
             simulationStage.show();
-            simulationPresenter.drawMap();
+            simulationPresenter.drawMap(false,false);
         } catch (Exception e) {
             System.out.println("Error: "+e.getMessage());
         }
@@ -109,7 +108,7 @@ public class LoadWorldPresenter {
 
             LoadMainMenu();
             simulationStage.show();
-            simulationPresenter.drawMap();
+            simulationPresenter.drawMap(false,false);
         } catch (Exception e) {
             System.out.println("Error: "+e.getMessage());
         }
@@ -119,7 +118,7 @@ public class LoadWorldPresenter {
     private void onLoadConfiguration() {
         String selectedConfig = configurationComboBox.getSelectionModel().getSelectedItem();
         if (selectedConfig != null) {
-            Map<String, Object> config = loadConfiguration(selectedConfig);
+            Map <String, Object> config = loadConfiguration(selectedConfig);
             if (config != null) {
                 startSimulation(config);
             }
@@ -141,6 +140,7 @@ public class LoadWorldPresenter {
             else {
                 simulationPresenter.setWorldMap(new WaterMap((Integer) config.get("mapWidth"),(Integer) config.get("mapHeight"),(Integer) config.get("initialPlantCount")));
             }
+
             simulationPresenter.setSimulation(new Parameters(
                     (Integer) config.get("dailyPlantGrowth"),
                     (Integer) config.get("initialAnimalCount"),
@@ -150,7 +150,6 @@ public class LoadWorldPresenter {
                     (Integer) config.get("offspringEnergy"),
                     (Integer) config.get("genomeLength"),
                     (String) config.get("animalBehaviour")));
-
             simulationPresenter.setSaving(saveToFileCheckBox.isSelected());
             simulationPresenter.addObserver(simulationPresenter);
 
@@ -162,55 +161,25 @@ public class LoadWorldPresenter {
 
             LoadMainMenu();
             simulationStage.show();
-            simulationPresenter.drawMap();
+            simulationPresenter.drawMap(false,false);
         } catch (Exception e) {
             System.out.println("Error: "+e.getMessage());
         }
     }
 
-
-    private Map loadConfiguration(String configurationName) {
+    private Map<String, Object> loadConfiguration(String configurationName) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File("saved_configurations" + File.separator + configurationName + ".json");
             if (file.exists()) {
-                return objectMapper.readValue(file, Map.class);
+                return objectMapper.readValue(file, new TypeReference<>(){});
             } else {
                 showError("Configuration file not found: " + file.getAbsolutePath());
             }
         } catch (Exception e) {
-            System.out.println("Error: "+e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             showError("Error loading configuration: " + e.getMessage());
         }
         return null;
-    }
-
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Validation Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-
-
-    @FXML
-    private void onBackToMenuClick() {
-        try {
-            LoadMainMenu();
-        } catch (Exception e) {
-            System.out.println("Error: "+e.getMessage());
-        }
-    }
-    @FXML
-    private Button backButton;
-    private void LoadMainMenu() throws IOException {
-        FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("/mainMenu.fxml"));
-        Scene mainMenuScene = new Scene(mainMenuLoader.load());
-        MenuPresenter menuPresenter = mainMenuLoader.getController();
-        Stage currentStage = (Stage) backButton.getScene().getWindow();
-        menuPresenter.setPrimaryStage(currentStage);
-        currentStage.setScene(mainMenuScene);
     }
 }

@@ -2,8 +2,6 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Parameters;
 
-import java.util.List;
-
 public class AnimalFactory {
 
     public static Animal createAnimal(String animalType, Vector2d location, Parameters parameters) {

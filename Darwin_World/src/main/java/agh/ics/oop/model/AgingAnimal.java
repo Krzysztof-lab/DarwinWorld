@@ -2,9 +2,7 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Genes;
 import agh.ics.oop.model.util.Parameters;
-
 import java.util.List;
-
 import static java.lang.Math.min;
 
 public class AgingAnimal extends Animal {

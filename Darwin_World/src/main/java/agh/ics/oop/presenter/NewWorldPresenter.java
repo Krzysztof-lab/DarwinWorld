@@ -4,8 +4,6 @@ import agh.ics.oop.model.SphericalMap;
 import agh.ics.oop.model.WaterMap;
 import agh.ics.oop.model.util.Parameters;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -14,13 +12,12 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class NewWorldPresenter {
+public class NewWorldPresenter extends AbstractPresenter {
 
     @FXML private TextField mapWidthField;
     @FXML private TextField mapHeightField;
@@ -92,7 +89,7 @@ public class NewWorldPresenter {
 
                 LoadMainMenu();
                 simulationStage.show();
-                simulationPresenter.drawMap();
+                simulationPresenter.drawMap(false,false);
             } catch (Exception e) {
                 System.out.println("Error: "+e.getMessage());
             }
@@ -133,7 +130,7 @@ public class NewWorldPresenter {
                 configuration.put("reproductionEnergy", reproductionEnergy);
                 configuration.put("offspringEnergy", offspringEnergy);
                 configuration.put("genomeLength", genomeLength);
-                configuration.put("animalBehavior", animalBehavior);
+                configuration.put("animalBehaviour", animalBehavior);
                 configuration.put("mapVariant", mapVariant);
 
                 // Serializacja do pliku JSON
@@ -167,39 +164,5 @@ public class NewWorldPresenter {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    private void showError(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Validation Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showSuccess(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void onBackToMenuClick() {
-        try {
-            LoadMainMenu();
-        } catch (Exception e) {
-            System.out.println("Error: "+e.getMessage());
-        }
-    }
-
-    private void LoadMainMenu() throws IOException {
-        FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("/mainMenu.fxml"));
-        Scene mainMenuScene = new Scene(mainMenuLoader.load());
-        MenuPresenter menuPresenter = mainMenuLoader.getController();
-        Stage currentStage = (Stage) mapWidthField.getScene().getWindow();
-        menuPresenter.setPrimaryStage(currentStage);
-        currentStage.setScene(mainMenuScene);
     }
 }

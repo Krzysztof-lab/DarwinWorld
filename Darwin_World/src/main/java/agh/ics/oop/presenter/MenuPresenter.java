@@ -27,7 +27,7 @@ public class MenuPresenter {
 
             primaryStage.getScene().setRoot(root);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
         }
     }
 

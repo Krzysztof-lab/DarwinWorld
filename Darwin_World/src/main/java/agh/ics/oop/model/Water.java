@@ -1,7 +1,6 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Boundary;
-import javafx.scene.image.ImageView;
 
 public class Water implements WorldElement {
 

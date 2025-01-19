@@ -1,12 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.Boundary;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
 public class SphericalMap extends AbstractWorldMap {
 
     public SphericalMap(int width, int height,int numberOfPlants) {

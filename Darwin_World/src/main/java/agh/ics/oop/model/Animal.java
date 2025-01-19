@@ -2,14 +2,9 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Genes;
 import agh.ics.oop.model.util.Parameters;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-//testy sie zepsuly btw
+
 public class Animal implements WorldElement {
 
     protected int energy;
@@ -70,6 +65,9 @@ public class Animal implements WorldElement {
     }
     public List<Integer> getGenes() {
         return genes;
+    }
+    public int getActiveGene() {
+        return  genes.get(age % parameters.geneLength());
     }
     public boolean isDead() {
         return dead;

@@ -1,7 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.Boundary;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
