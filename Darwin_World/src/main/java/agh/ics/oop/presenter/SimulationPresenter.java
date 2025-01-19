@@ -248,6 +248,7 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML private Label childrenCountLabel;
     @FXML private Label ageLabel;
     @FXML private Label deathDayLabel;
+    @FXML private Label descendantsLabel;
     public void updateSelectedAnimalStats() {
         if (selectedAnimal != null) {
             genotypeLabel.setText("Genotype: " + selectedAnimal.getGenes());
@@ -255,6 +256,7 @@ public class SimulationPresenter implements MapChangeListener {
             energyLabel.setText("Energy: " + selectedAnimal.getEnergy());
             plantsEatenLabel.setText("Plants Eaten: " + selectedAnimal.getPlantsEaten());
             childrenCountLabel.setText("Children: " + selectedAnimal.getOffspring());
+            descendantsLabel.setText("Descendants: " + selectedAnimal.getDescendants());
             ageLabel.setText("Age: " + selectedAnimal.getAge());
             deathDayLabel.setText("Death Day: " + (selectedAnimal.isDead() ? selectedAnimal.getAge() : "Still Alive"));
         }

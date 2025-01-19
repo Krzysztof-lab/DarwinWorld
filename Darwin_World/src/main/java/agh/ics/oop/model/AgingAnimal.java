@@ -2,7 +2,11 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.Genes;
 import agh.ics.oop.model.util.Parameters;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import static java.lang.Math.min;
 
 public class AgingAnimal extends Animal {
@@ -13,11 +17,11 @@ public class AgingAnimal extends Animal {
     private static final float SKIP_TURN = 80/((OLD_AGE-AGING_START)*100);
 
     public AgingAnimal(Vector2d location, Parameters parameters) {
-        super(location, parameters);
+        super(location, Genes.makeGenes(parameters.geneLength()), parameters, new HashSet<>());
     }
 
-    public AgingAnimal(Vector2d location, List<Integer> genes, Parameters parameters) {
-        super(location, genes, parameters);
+    public AgingAnimal(Vector2d location, List<Integer> genes, Parameters parameters, Set<Animal> ancestors) {
+        super(location, genes, parameters, ancestors);
     }
 
     @Override
@@ -43,6 +47,11 @@ public class AgingAnimal extends Animal {
 
         List<Integer> newGenes = Genes.combineGenes(this, mate, parameters.geneLength());
 
-        return new AgingAnimal(location, newGenes, parameters);
+        Set<Animal> childAncestors = new HashSet<>(Set.copyOf(ancestors));
+        childAncestors.addAll(mate.ancestors);
+        childAncestors.add(this);
+        childAncestors.add(mate);
+
+        return new AgingAnimal(location, newGenes, parameters, childAncestors);
     }
 }

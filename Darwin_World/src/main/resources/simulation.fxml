@@ -53,6 +53,7 @@
                 <Label fx:id="energyLabel" text="Energy: " />
                 <Label fx:id="plantsEatenLabel" text="Plants Eaten: " />
                 <Label fx:id="childrenCountLabel" text="Children: " />
+                <Label fx:id="descendantsLabel" text="Descendants: " />
                 <Label fx:id="ageLabel" text="Age: " />
                 <Label fx:id="deathDayLabel" text="Death Day: " />
             </VBox>
