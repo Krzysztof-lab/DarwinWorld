@@ -42,8 +42,9 @@ public class SimulationPresenter implements MapChangeListener {
         this.map = worldMap;
         yMax = map.getBounds().upperRight().getY();
         xMax = map.getBounds().upperRight().getX();
-        width = Math.round((float) MAP_MAX_WIDTH / xMax + 1);
-        height = Math.round((float) MAP_MAX_HEIGHT / yMax + 1);
+        width = Math.min(MAP_MAX_WIDTH / (xMax + 1), MAP_MAX_HEIGHT / (yMax + 1));
+        height = width; // Ensure cells remain square.
+
     }
 
     public void setSimulation(Parameters parameters) throws IncorrectPositionException {
