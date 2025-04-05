@@ -1,4 +1,4 @@
-# Darwin World®
+# Darwin World
 
 This is a simple object-oriented game project created for the *Object-Oriented Design* course at the **Faculty of Computer Science**, **AGH University of Science and Technology**.
 
