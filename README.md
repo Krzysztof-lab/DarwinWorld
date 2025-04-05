@@ -11,7 +11,7 @@ The simulation features a population of monkeys living in a virtual world. Monke
 - Reproduce when certain conditions are met,
 - Die if they run out of energy (which they get from eating).
 
-The project is written in **Java** and focuses on object-oriented programming concepts, including encapsulation, inheritance, polymorphism and threads.
+The project is written in **Java** and focuses on object-oriented programming concepts, including encapsulation, inheritance, polymorphism, and threads.
 
 ## 📚 Technologies Used
 
@@ -30,3 +30,13 @@ This project was developed as part of coursework at AGH University by two studen
 
 ### In-Game View
 ![Game View](assets/gamescreenshot.jpg)
+
+## 📦 How to Run the Application
+
+1. Make sure you have **JDK 17+** installed  
+   *(and JavaFX if required – [download here](https://openjfx.io/))*
+2. Download the `.jar` file from the [[Releases page](https://github.com/Krzysztof-lab/DarwinWorld/releases/tag/v1.0)]
+3. Run the application via terminal:
+
+   ```bash
+   java -jar MyCustomAppName.jar
