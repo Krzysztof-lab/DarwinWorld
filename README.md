@@ -39,4 +39,4 @@ This project was developed as part of coursework at AGH University by two studen
 3. Run the application via terminal:
 
    ```bash
-   java -jar MyCustomAppName.jar
+   java -jar DarwinWorld.jar
